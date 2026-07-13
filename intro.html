@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragmentos en el vacío</title>
+<style>
+  :root {
+    --bg: #080D1A;
+    --accent: #3ECFB2;
+    --text: #E8ECF4;
+    --text-dim: #6E7A90;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- pantalla de carga ---------- */
+  #loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+    z-index: 3;
+    transition: opacity 0.6s ease;
+  }
+
+  #loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .loader-ring {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(232, 236, 244, 0.15);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loader-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ---------- vídeo ---------- */
+  #introVideo {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  #introVideo.visible {
+    opacity: 1;
+  }
+
+  /* ---------- saltar intro ---------- */
+  #skipIntro {
+    position: fixed;
+    bottom: 5vh;
+    right: 6vw;
+    z-index: 4;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    border: 1px solid rgba(232, 236, 244, 0.2);
+    padding: 0.6rem 1.1rem;
+    opacity: 0;
+    transition: opacity 0.5s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  #skipIntro.visible { opacity: 1; }
+
+  #skipIntro:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Cargando...</div>
+  </div>
+
+  <!--
+    PON AQUÍ TU VÍDEO: sustituye el src de abajo por el tuyo
+    (enlace de Cloudinary, o el nombre del archivo si lo subes
+    a la misma carpeta que este HTML).
+  -->
+  <video
+    id="introVideo"
+    src="https://res.cloudinary.com/dfaijs7v3/video/upload/v1783937119/portfolio1_gntlbi.mp4"
+    muted
+    playsinline
+    preload="auto"
+  ></video>
+
+  <a href="fragmentos-cristal.html" id="skipIntro">Saltar intro →</a>
+
+<script>
+  // A dónde va una vez termina el vídeo (o si el usuario pulsa "Saltar intro")
+  const DESTINO = 'fragmentos-cristal.html';
+
+  const loader = document.getElementById('loader');
+  const video = document.getElementById('introVideo');
+  const skipLink = document.getElementById('skipIntro');
+  skipLink.setAttribute('href', DESTINO);
+
+  let started = false;
+
+  function playIntro() {
+    if (started) return;
+    started = true;
+    loader.classList.add('hidden');
+    video.classList.add('visible');
+    video.play().catch(() => {
+      // si el navegador bloquea el autoplay, pasamos directo a la web
+      goToDestino();
+    });
+    setTimeout(() => skipLink.classList.add('visible'), 1200);
+  }
+
+  // en cuanto el vídeo puede reproducirse sin cortes, arrancamos
+  video.addEventListener('canplaythrough', playIntro, { once: true });
+
+  // por si tarda demasiado en cargar, arrancamos igualmente a los 6s
+  setTimeout(playIntro, 6000);
+
+  // si algo falla al cargar el vídeo, no dejamos a nadie atascado
+  video.addEventListener('error', () => goToDestino());
+
+  video.addEventListener('ended', goToDestino);
+
+  function goToDestino() {
+    window.location.href = DESTINO;
+  }
+</script>
+</body>
+</html>

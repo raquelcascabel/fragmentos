@@ -1,0 +1,139 @@
+/* Estilos compartidos para las páginas de sección: superficie.html,
+   profundidad.html, deriva.html. Misma paleta que fragmentos-cristal.html. */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #080D1A;
+  --accent: #3ECFB2;
+  --accent-2: #8B7FF5;
+  --text: #E8ECF4;
+  --text-dim: #6E7A90;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  padding: 8vh 8vw 10vh;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  gap: 0.9rem;
+}
+
+header {
+  max-width: 720px;
+  margin: 3.5rem 0 3rem;
+}
+
+.eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.1rem;
+  font-weight: 500;
+}
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.video-frame {
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(232, 236, 244, 0.14);
+  border-radius: 2px;
+  background: linear-gradient(160deg, #0D1526, #080D1A);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.video-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(62, 207, 178, 0.08), transparent 70%);
+}
+
+.play-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 236, 244, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 1.1rem;
+  z-index: 1;
+}
+
+.video-frame p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 1;
+}
+
+/* Cuando haya vídeo real, sustituir .video-frame por, p. ej.:
+   <video controls poster="..." style="width:100%;aspect-ratio:16/9;">
+     <source src="https://res.cloudinary.com/TU_CLOUD/video/upload/xxxx.mp4" type="video/mp4">
+   </video>
+*/
+
+article {
+  max-width: 640px;
+}
+
+article p {
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: var(--text-dim);
+  margin-bottom: 1.2rem;
+}
+
+footer {
+  margin-top: 4rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  body { padding: 6vh 7vw 8vh; }
+}

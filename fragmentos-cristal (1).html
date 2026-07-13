@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragmentos en el vacío</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080D1A;
+    --bg-soft: #0D1526;
+    --accent: #3ECFB2;
+    --accent-2: #8B7FF5;
+    --text: #E8ECF4;
+    --text-dim: #6E7A90;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  #canvas-container {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #webgl { display: block; width: 100%; height: 100%; }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 8vw;
+  }
+
+  .section.align-right { justify-content: flex-end; }
+  .section.align-left { justify-content: flex-start; }
+  .section.align-center { justify-content: center; text-align: center; }
+
+  .block {
+    max-width: 460px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1.1s ease, transform 1.1s ease;
+  }
+
+  .block.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.1rem;
+    font-weight: 500;
+  }
+
+  h1, h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    font-weight: 400;
+  }
+
+  p {
+    margin-top: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 6vh;
+    left: 8vw;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    opacity: 1;
+    transition: opacity 0.8s ease;
+  }
+
+  .scroll-hint .line {
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-hint .line::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--text);
+    animation: slide 1.8s ease-in-out infinite;
+  }
+
+  @keyframes slide {
+    0% { left: -100%; }
+    50% { left: 0; }
+    100% { left: 100%; }
+  }
+
+  .fade-out { opacity: 0 !important; }
+
+  .divider {
+    width: 1px;
+    height: 64px;
+    background: linear-gradient(var(--accent), transparent);
+    margin-bottom: 1.6rem;
+  }
+
+  footer.section {
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  footer.section h2 { color: var(--text); }
+
+  footer .signature {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+
+  .nav-tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    background: rgba(8, 13, 26, 0.72);
+    border: 1px solid rgba(62, 207, 178, 0.5);
+    border-radius: 2px;
+    backdrop-filter: blur(6px);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, -160%) scale(0.94);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .nav-tooltip.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -180%) scale(1);
+  }
+
+  .nav-tooltip-arrow {
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  body.nav-hover { cursor: pointer; }
+  body.modal-open { overflow: hidden; }
+
+  a.block-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    pointer-events: auto;
+    cursor: pointer;
+    border-left: 1px solid rgba(62, 207, 178, 0.25);
+    padding-left: 1.4rem;
+    margin-left: -1.4rem;
+    transition: border-color 0.35s ease, transform 0.35s ease;
+  }
+
+  a.block-link:hover {
+    border-left-color: var(--accent);
+    transform: translateX(6px);
+  }
+
+  a.block-link:hover h2 {
+    color: var(--accent);
+  }
+
+  a.block-link h2 {
+    transition: color 0.35s ease;
+  }
+
+  .block-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.75;
+    transition: opacity 0.35s ease, gap 0.35s ease;
+  }
+
+  a.block-link:hover .block-cta {
+    opacity: 1;
+    gap: 0.8rem;
+  }
+
+  @media (max-width: 640px) {
+    .section { padding: 0 7vw; }
+    .block { max-width: 100%; }
+  }
+
+  /* ---------- habitáculo (modal de cristal) ---------- */
+  .crystal-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6vh 5vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .crystal-modal.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .crystal-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 8, 16, 0.78);
+    backdrop-filter: blur(10px);
+  }
+
+  .crystal-modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    max-height: 86vh;
+    overflow-y: auto;
+    background: linear-gradient(165deg, rgba(20, 28, 48, 0.92), rgba(8, 13, 26, 0.96));
+    border: 1px solid rgba(232, 236, 244, 0.16);
+    border-radius: 3px;
+    padding: 2.4rem 2.4rem 2.8rem;
+    box-shadow: 0 0 0 1px rgba(62, 207, 178, 0.15), 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(139, 127, 245, 0.12);
+    transform: scale(0.88);
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+  }
+
+  .crystal-modal.is-open .crystal-modal-panel {
+    transform: scale(1);
+  }
+
+  .crystal-modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(232, 236, 244, 0.25);
+    background: transparent;
+    color: var(--text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+
+  .crystal-modal-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .crystal-modal-eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+  }
+
+  .crystal-modal-panel h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.2;
+    margin-bottom: 1.6rem;
+    padding-right: 2rem;
+  }
+
+  .crystal-modal-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid rgba(232, 236, 244, 0.1);
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .crystal-modal-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .crystal-modal-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .crystal-modal-img-ph {
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, rgba(139, 127, 245, 0.14), rgba(62, 207, 178, 0.08));
+    border: 1px solid rgba(232, 236, 244, 0.1);
+  }
+
+  .crystal-modal-panel p {
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  @media (max-width: 640px) {
+    .crystal-modal-panel { padding: 1.8rem 1.6rem 2.2rem; max-height: 90vh; }
+  }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"><canvas id="webgl"></canvas></div>
+
+<div class="content">
+
+  <section class="section align-left hero">
+    <div class="block is-visible">
+      <div class="eyebrow">Descenso · 000</div>
+      <h1>Fragmentos<br>en el vacío</h1>
+      <p>Un recorrido entre cristal y estrellas.<br>Desplázate para atravesarlo.</p>
+    </div>
+    <div class="scroll-hint" id="scrollHint">
+      <span class="line"></span>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <section class="section align-right" id="sec-superficie">
+    <a class="block reveal block-link" href="superficie.html">
+      <div class="divider"></div>
+      <div class="eyebrow">01 — Superficie</div>
+      <h2>Lo que se rompe, se multiplica</h2>
+      <p>Cada arista devuelve una imagen distinta. Ninguna es más cierta que las demás — sólo cambia el ángulo desde el que se mira.</p>
+      <span class="block-cta">Ver vídeo <span>→</span></span>
+    </a>
+  </section>
+
+  <section class="section align-left" id="sec-profundidad">
+    <a class="block reveal block-link" href="profundidad.html">
+      <div class="divider"></div>
+      <div class="eyebrow">02 — Profundidad</div>
+      <h2>Cada ángulo, una versión distinta</h2>
+      <p>El cristal no oculta lo que hay detrás, lo distorsiona. Entre una cara y la siguiente hay siempre una pausa de vacío.</p>
+      <span class="block-cta">Ver vídeo <span>→</span></span>
+    </a>
+  </section>
+
+  <section class="section align-right" id="sec-deriva">
+    <a class="block reveal block-link" href="deriva.html">
+      <div class="divider"></div>
+      <div class="eyebrow">03 — Deriva</div>
+      <h2>El vacío también tiene textura</h2>
+      <p>No hay arriba ni abajo cuando todo flota. Sólo la luz que roza un filo y luego se apaga, un poco más lejos.</p>
+      <span class="block-cta">Ver vídeo <span>→</span></span>
+    </a>
+  </section>
+
+  <footer class="section align-center" id="sec-fin">
+    <div class="block reveal">
+      <h2>Fin del recorrido</h2>
+      <p>Vuelve a subir para atravesarlo de nuevo, cada vez desde un ángulo distinto.</p>
+    </div>
+    <div class="signature reveal">— fragmentos / 2026</div>
+  </footer>
+
+</div>
+
+<div id="navTooltip" class="nav-tooltip"><span class="nav-tooltip-arrow">→</span><span id="navTooltipText"></span></div>
+
+<div id="crystalModal" class="crystal-modal" aria-hidden="true">
+  <div class="crystal-modal-backdrop" id="crystalModalBackdrop"></div>
+  <div class="crystal-modal-panel">
+    <button class="crystal-modal-close" id="crystalModalClose" aria-label="Cerrar">✕</button>
+    <div class="crystal-modal-eyebrow" id="modalEyebrow"></div>
+    <h3 id="modalTitle"></h3>
+    <div class="crystal-modal-media">
+      <video id="modalVideo" controls playsinline preload="metadata"></video>
+    </div>
+    <div class="crystal-modal-gallery">
+      <div class="crystal-modal-img-ph"></div>
+      <div class="crystal-modal-img-ph"></div>
+    </div>
+    <p id="modalText"></p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const canvas = document.getElementById('webgl');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x080D1A, 1);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x080D1A, 4, 62);
+
+  const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.set(0, 0, 8);
+
+  // ---------- luces ----------
+  scene.add(new THREE.AmbientLight(0x334155, 0.6));
+
+  const lightPink = new THREE.PointLight(0xFF8FC8, 7, 60);
+  lightPink.position.set(6, 4, -10);
+  scene.add(lightPink);
+
+  const lightViolet = new THREE.PointLight(0xA97AF0, 6, 60);
+  lightViolet.position.set(-8, -3, -30);
+  scene.add(lightViolet);
+
+  const lightRim = new THREE.PointLight(0xFFFFFF, 4, 50);
+  lightRim.position.set(0, 6, 4);
+  scene.add(lightRim);
+
+  // ---------- estrellas ----------
+  // Textura de punto suave: sin ella, PointsMaterial dibuja cuadrados que a
+  // tamaños grandes se leen como manchas de luz en vez de estrellas.
+  function makeStarTexture() {
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const ctx = c.getContext('2d');
+    const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(0.25, 'rgba(255,255,255,0.9)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 64, 64);
+    const tex = new THREE.CanvasTexture(c);
+    tex.needsUpdate = true;
+    return tex;
+  }
+  const starTexture = makeStarTexture();
+
+  // Shader propio en vez de PointsMaterial: cada estrella necesita su fase
+  // y velocidad de parpadeo independientes, y PointsMaterial no lo permite.
+  const starVertexShader = `
+    attribute float aPhase;
+    attribute float aSpeed;
+    attribute float aSize;
+    uniform float uTime;
+    varying float vTwinkle;
+    void main() {
+      vTwinkle = 0.45 + 0.65 * sin(uTime * aSpeed + aPhase);
+      vTwinkle = clamp(vTwinkle, 0.15, 1.3);
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = aSize * (0.7 + vTwinkle * 0.5);
+      gl_Position = projectionMatrix * mvPosition;
+    }
+  `;
+  const starFragmentShader = `
+    uniform sampler2D uMap;
+    uniform vec3 uColor;
+    varying float vTwinkle;
+    void main() {
+      vec4 tex = texture2D(uMap, gl_PointCoord);
+      gl_FragColor = vec4(uColor * vTwinkle, tex.a * min(vTwinkle, 1.0));
+    }
+  `;
+
+  // sizeAttenuation propio (fijo en px, ignora distancia) -> las estrellas
+  // no se agrandan si por azar caen cerca del recorrido de la cámara.
+  function makeStars(count, spread, minRadius, pxSize, baseColor, speedRange) {
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const phases = new Float32Array(count);
+    const speeds = new Float32Array(count);
+    const sizes = new Float32Array(count);
+    for (let i = 0; i < count; i++) {
+      let x, y, z, r;
+      do {
+        x = (Math.random() - 0.5) * spread;
+        y = (Math.random() - 0.5) * spread;
+        r = Math.sqrt(x * x + y * y);
+      } while (r < minRadius);
+      z = (Math.random() - 0.5) * spread;
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+      phases[i] = Math.random() * Math.PI * 2;
+      speeds[i] = speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
+      sizes[i] = pxSize * (0.6 + Math.random() * 0.8);
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+    geo.setAttribute('aSpeed', new THREE.BufferAttribute(speeds, 1));
+    geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+
+    const mat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uMap: { value: starTexture },
+        uColor: { value: new THREE.Color(baseColor) }
+      },
+      vertexShader: starVertexShader,
+      fragmentShader: starFragmentShader,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+    return new THREE.Points(geo, mat);
+  }
+
+  const starsFar = makeStars(3200, 170, 14, 3.7, 0xCFE0FF, [0.4, 1.1]);
+  const starsNear = makeStars(900, 110, 14, 6.1, 0xFFFFFF, [0.6, 1.8]);
+  scene.add(starsFar, starsNear);
+
+  // ---------- fragmentos de cristal ----------
+  // Geometría propia: bipirámide alargada e irregular (punta larga abajo,
+  // corona más corta arriba) con color por vértice, imitando el gema
+  // facetada de la referencia en vez de un poliedro regular genérico.
+  function makeCrystalGeometry(sides, radiusMid, topHeight, bottomHeight, jitter) {
+    const ring = [];
+    for (let i = 0; i < sides; i++) {
+      const a = (i / sides) * Math.PI * 2;
+      const r = radiusMid * (1 - jitter / 2 + Math.random() * jitter);
+      ring.push(new THREE.Vector3(
+        Math.cos(a) * r,
+        (Math.random() - 0.5) * 0.18 * radiusMid,
+        Math.sin(a) * r
+      ));
+    }
+    const topV = new THREE.Vector3(0, topHeight * (0.85 + Math.random() * 0.3), 0);
+    const botV = new THREE.Vector3(0, -bottomHeight * (0.85 + Math.random() * 0.3), 0);
+
+    const colorTop = new THREE.Color(0xE7DBF9);
+    const colorMid = new THREE.Color(0xFFFFFF);
+    const colorBottom = new THREE.Color(0xFBDCEC);
+
+    const positions = [];
+    const colors = [];
+    function pushTri(a, b, c, ca, cb, cc) {
+      positions.push(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z);
+      colors.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b, cc.r, cc.g, cc.b);
+    }
+    for (let i = 0; i < sides; i++) {
+      const p1 = ring[i];
+      const p2 = ring[(i + 1) % sides];
+      pushTri(topV, p1, p2, colorTop, colorMid, colorMid);
+      pushTri(botV, p2, p1, colorBottom, colorMid, colorMid);
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
+    geo.userData.tip = topV;
+    geo.userData.tail = botV;
+    return geo;
+  }
+
+  // Textura para los destellos en las puntas (brillo + estrella de 4 puntas).
+  function makeSparkleTexture() {
+    const c = document.createElement('canvas');
+    c.width = c.height = 128;
+    const ctx = c.getContext('2d');
+    const cx = 64, cy = 64;
+    const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 64);
+    glow.addColorStop(0, 'rgba(255,255,255,0.9)');
+    glow.addColorStop(0.35, 'rgba(255,255,255,0.25)');
+    glow.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, 128, 128);
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    const outer = 60, inner = 6;
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const ang = (i / 8) * Math.PI * 2;
+      const rad = i % 2 === 0 ? outer : inner;
+      const x = Math.cos(ang) * rad, y = Math.sin(ang) * rad;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.needsUpdate = true;
+    return tex;
+  }
+  const sparkleTexture = makeSparkleTexture();
+
+  const crystalMat = new THREE.MeshPhysicalMaterial({
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.82,
+    roughness: 0.08,
+    metalness: 0,
+    transmission: 0.4,
+    thickness: 0.9,
+    clearcoat: 1,
+    clearcoatRoughness: 0.04,
+    emissive: 0xFFFFFF,
+    emissiveIntensity: 0.06,
+    side: THREE.DoubleSide,
+    flatShading: true,
+    fog: true
+  });
+
+  const FRAGMENT_COUNT = 13;
+  const SPACING = 5.4;
+  const fragments = [];
+  const sparkles = [];
+  const fragGroup = new THREE.Group();
+  scene.add(fragGroup);
+
+  function addSparkle(parent, localPos, baseScale) {
+    const mat = new THREE.SpriteMaterial({
+      map: sparkleTexture, transparent: true, depthWrite: false,
+      blending: THREE.AdditiveBlending, color: 0xFFFFFF, fog: false
+    });
+    const sprite = new THREE.Sprite(mat);
+    sprite.position.copy(localPos);
+    sprite.scale.setScalar(baseScale);
+    sprite.userData.baseScale = baseScale;
+    sprite.userData.phase = Math.random() * Math.PI * 2;
+    sprite.userData.speed = 1.2 + Math.random() * 1.8;
+    parent.add(sprite);
+    sparkles.push(sprite);
+  }
+
+  function buildCrystal(sides, radiusMid, topH, botH, jitter) {
+    const geo = makeCrystalGeometry(sides, radiusMid, topH, botH, jitter);
+    const mesh = new THREE.Mesh(geo, crystalMat);
+
+    const edges = new THREE.EdgesGeometry(geo, 1);
+    const edgeMat = new THREE.LineBasicMaterial({
+      color: 0xFFFFFF, transparent: true, opacity: 0.85, fog: true
+    });
+    const edgeLines = new THREE.LineSegments(edges, edgeMat);
+    mesh.add(edgeLines);
+    mesh.userData.edgeMat = edgeMat;
+
+    return mesh;
+  }
+
+  const mainCrystals = [];
+
+  const GOLDEN_ANGLE = 2.399963;
+
+  for (let i = 0; i < FRAGMENT_COUNT; i++) {
+    const sides = 3 + Math.floor(Math.random() * 5); // 3 a 7 caras: cada cristal distinto
+    const girth = 0.22 + Math.random() * 0.78;
+    const mesh = buildCrystal(sides, girth, 1.5 + Math.random() * 0.9, 2 + Math.random() * 1.2, 0.22);
+
+    const scale = 0.6 + Math.random() * 2.6;
+    mesh.scale.setScalar(scale);
+    mesh.userData.baseScale = scale;
+
+    // reparto en espiral (ángulo dorado) en vez de aleatorio puro, para que
+    // no se amontonen en el centro ni dejen huecos vacíos
+    const angle = i * GOLDEN_ANGLE;
+    const radius = 2.2 + (i % 5) * 0.9;
+    mesh.position.set(
+      Math.cos(angle) * radius + (Math.random() - 0.5) * 1.4,
+      Math.sin(angle) * radius * 0.62 + (Math.random() - 0.5) * 1.1,
+      -i * SPACING - 6
+    );
+    mesh.rotation.set(Math.random() * 0.6 - 0.3, Math.random() * Math.PI, Math.random() * 0.6 - 0.3);
+
+    mesh.userData.spin = {
+      x: (Math.random() - 0.5) * 0.05,
+      y: (Math.random() - 0.5) * 0.05,
+      z: (Math.random() - 0.5) * 0.025
+    };
+
+    addSparkle(mesh, mesh.geometry.userData.tip, 0.55);
+    addSparkle(mesh, mesh.geometry.userData.tail, 0.4);
+
+    fragGroup.add(mesh);
+    fragments.push(mesh);
+    mainCrystals.push(mesh);
+
+    // cristal satélite pequeño, como las esquirlas sueltas de la referencia
+    if (Math.random() > 0.25) {
+      const satSides = 3 + Math.floor(Math.random() * 4);
+      const satGirth = 0.12 + Math.random() * 0.5;
+      const sat = buildCrystal(satSides, satGirth, 0.7 + Math.random() * 0.6, 0.9 + Math.random() * 0.8, 0.25);
+      const satScale = 0.2 + Math.random() * 0.55;
+      sat.scale.setScalar(satScale);
+      sat.position.set(
+        mesh.position.x + (Math.random() - 0.5) * 3.2,
+        mesh.position.y + (Math.random() - 0.5) * 2.4,
+        mesh.position.z + (Math.random() - 0.5) * 2.5
+      );
+      sat.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      sat.userData.spin = {
+        x: (Math.random() - 0.5) * 0.09,
+        y: (Math.random() - 0.5) * 0.09,
+        z: (Math.random() - 0.5) * 0.05
+      };
+      addSparkle(sat, sat.geometry.userData.tip, 0.45);
+      fragGroup.add(sat);
+      fragments.push(sat);
+    }
+  }
+
+  // ---------- cúmulo desordenado al inicio ----------
+  // Al arrancar el scroll, además del túnel principal, un grupo de
+  // cristales sueltos flota disperso y sin orden alrededor de la cámara,
+  // girando muy despacio, como en la imagen de referencia.
+  const AMBIENT_COUNT = 16;
+  for (let i = 0; i < AMBIENT_COUNT; i++) {
+    const scale = 0.2 + Math.random() * 1.3;
+    const ambSides = 3 + Math.floor(Math.random() * 5);
+    const ambGirth = 0.15 + Math.random() * 0.7;
+    const amb = buildCrystal(ambSides, ambGirth, 1.1 + Math.random() * 1, 1.4 + Math.random() * 1.3, 0.3);
+    amb.scale.setScalar(scale);
+    const ambAngle = i * GOLDEN_ANGLE + 1.4;
+    const ambRadius = 4 + (i % 6) * 2.2;
+    amb.position.set(
+      Math.cos(ambAngle) * ambRadius + (Math.random() - 0.5) * 2.5,
+      Math.sin(ambAngle) * ambRadius * 0.55 + (Math.random() - 0.5) * 2,
+      6 - (i / AMBIENT_COUNT) * 26 + (Math.random() - 0.5) * 3
+    );
+    amb.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+    amb.userData.spin = {
+      x: (Math.random() - 0.5) * 0.04,
+      y: (Math.random() - 0.5) * 0.04,
+      z: (Math.random() - 0.5) * 0.02
+    };
+    if (Math.random() > 0.5) addSparkle(amb, amb.geometry.userData.tip, 0.4);
+    fragGroup.add(amb);
+    fragments.push(amb);
+  }
+
+  const totalDepth = FRAGMENT_COUNT * SPACING;
+
+  // ---------- cristales-enlace ----------
+  // Tres cristales principales quedan asociados a un apartado de la web.
+  // Al pasar el ratón por encima se agrandan, sus aristas cambian a color
+  // de acento y aparece un halo + una etiqueta, para que quede claro que
+  // son botones. Al hacer clic, el cristal se abre y da paso a un
+  // habitáculo con vídeo, imágenes y texto de esa sección.
+  const CLOUDINARY_DEMO_VIDEO = 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4';
+
+  const sectionContent = {
+    'sec-superficie': {
+      eyebrow: '01 — Superficie',
+      title: 'Lo que se rompe, se multiplica',
+      text: 'Cada arista devuelve una imagen distinta. Ninguna es más cierta que las demás — sólo cambia el ángulo desde el que se mira.',
+      video: CLOUDINARY_DEMO_VIDEO
+    },
+    'sec-profundidad': {
+      eyebrow: '02 — Profundidad',
+      title: 'Cada ángulo, una versión distinta',
+      text: 'El cristal no oculta lo que hay detrás, lo distorsiona. Entre una cara y la siguiente hay siempre una pausa de vacío.',
+      video: CLOUDINARY_DEMO_VIDEO
+    },
+    'sec-deriva': {
+      eyebrow: '03 — Deriva',
+      title: 'El vacío también tiene textura',
+      text: 'No hay arriba ni abajo cuando todo flota. Sólo la luz que roza un filo y luego se apaga, un poco más lejos.',
+      video: CLOUDINARY_DEMO_VIDEO
+    }
+  };
+  // Nota: los tres usan el mismo vídeo de ejemplo que diste — sustituye
+  // "video" en cada entrada de sectionContent por el vídeo real de esa
+  // sección cuando lo tengas.
+
+  const navLinks = [
+    { index: 2, target: 'sec-superficie', label: 'Superficie' },
+    { index: 6, target: 'sec-profundidad', label: 'Profundidad' },
+    { index: 10, target: 'sec-deriva', label: 'Deriva' }
+  ];
+  const navCrystals = [];
+
+  navLinks.forEach(nl => {
+    const mesh = mainCrystals[nl.index];
+    if (!mesh) return;
+
+    mesh.userData.isNav = true;
+    mesh.userData.navLabel = nl.label;
+    mesh.userData.navTarget = nl.target;
+    mesh.userData.hoverAmt = 0;
+    mesh.userData.hoverTarget = 0;
+    mesh.userData.openAmt = 0;
+    mesh.userData.openTarget = 0;
+    mesh.userData.modalShown = false;
+
+    // material propio (no compartido) para poder desvanecer este cristal
+    // en concreto al abrirse, sin afectar al resto
+    mesh.material = mesh.material.clone();
+    mesh.userData.ownMat = mesh.material;
+
+    const hit = new THREE.Mesh(
+      new THREE.SphereGeometry(1.15, 8, 8),
+      new THREE.MeshBasicMaterial({ visible: false })
+    );
+    mesh.add(hit);
+    mesh.userData.hit = hit;
+
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: sparkleTexture, transparent: true, depthWrite: false,
+      blending: THREE.AdditiveBlending, color: 0x3ECFB2, opacity: 0, fog: false
+    }));
+    halo.scale.setScalar(3.4);
+    mesh.add(halo);
+    mesh.userData.halo = halo;
+
+    navCrystals.push(mesh);
+  });
+
+  // ---------- scroll ----------
+  let targetZ = camera.position.z;
+  let mouseX = 0, mouseY = 0;
+
+  function scrollHeight() {
+    return document.body.scrollHeight - window.innerHeight;
+  }
+
+  function onScroll() {
+    const sh = scrollHeight();
+    const progress = sh > 0 ? Math.min(window.scrollY / sh, 1) : 0;
+    targetZ = 8 - progress * (totalDepth + 4);
+
+    const hint = document.getElementById('scrollHint');
+    if (hint) hint.classList.toggle('fade-out', window.scrollY > 40);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ---------- interacción con los cristales-enlace ----------
+  const raycaster = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  const navTooltip = document.getElementById('navTooltip');
+  const navTooltipText = document.getElementById('navTooltipText');
+  let hoveredNav = null;
+
+  function setNavHover(mesh, isHover) {
+    mesh.userData.hoverTarget = isHover ? 1 : 0;
+  }
+
+  function updateHover(clientX, clientY) {
+    ndc.x = (clientX / window.innerWidth) * 2 - 1;
+    ndc.y = -(clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(ndc, camera);
+
+    const hitTargets = navCrystals.map(m => m.userData.hit);
+    const intersects = raycaster.intersectObjects(hitTargets, false);
+    const found = intersects.length ? intersects[0].object.parent : null;
+
+    if (found !== hoveredNav) {
+      if (hoveredNav) setNavHover(hoveredNav, false);
+      if (found) setNavHover(found, true);
+      hoveredNav = found;
+      document.body.classList.toggle('nav-hover', !!found);
+      if (found) navTooltipText.textContent = found.userData.navLabel;
+      navTooltip.classList.toggle('is-visible', !!found);
+    }
+
+    if (found) {
+      navTooltipText.textContent = 'Abrir · ' + found.userData.navLabel;
+      navTooltip.style.left = clientX + 'px';
+      navTooltip.style.top = clientY + 'px';
+    }
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5);
+    mouseY = (e.clientY / window.innerHeight - 0.5);
+    updateHover(e.clientX, e.clientY);
+  });
+
+  // ---------- habitáculo (modal) ----------
+  const crystalModal = document.getElementById('crystalModal');
+  const modalEyebrow = document.getElementById('modalEyebrow');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalText = document.getElementById('modalText');
+  const modalVideo = document.getElementById('modalVideo');
+  let currentOpenMesh = null;
+
+  function openCrystal(mesh) {
+    if (mesh.userData.openTarget === 1) return;
+    mesh.userData.openTarget = 1;
+    currentOpenMesh = mesh;
+  }
+
+  function showModal(mesh) {
+    const data = sectionContent[mesh.userData.navTarget];
+    if (!data) return;
+    modalEyebrow.textContent = data.eyebrow;
+    modalTitle.textContent = data.title;
+    modalText.textContent = data.text;
+    if (modalVideo.getAttribute('src') !== data.video) {
+      modalVideo.setAttribute('src', data.video);
+    }
+    crystalModal.classList.add('is-open');
+    crystalModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    mesh.userData.modalShown = true;
+  }
+
+  function closeModal() {
+    crystalModal.classList.remove('is-open');
+    crystalModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    modalVideo.pause();
+    if (currentOpenMesh) {
+      currentOpenMesh.userData.openTarget = 0;
+      currentOpenMesh.userData.modalShown = false;
+      currentOpenMesh = null;
+    }
+  }
+
+  document.getElementById('crystalModalClose').addEventListener('click', closeModal);
+  document.getElementById('crystalModalBackdrop').addEventListener('click', closeModal);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && crystalModal.classList.contains('is-open')) closeModal();
+  });
+
+  window.addEventListener('click', (e) => {
+    if (crystalModal.classList.contains('is-open')) return;
+    ndc.x = (e.clientX / window.innerWidth) * 2 - 1;
+    ndc.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(ndc, camera);
+    const hitTargets = navCrystals.map(m => m.userData.hit);
+    const intersects = raycaster.intersectObjects(hitTargets, false);
+    if (intersects.length) {
+      openCrystal(intersects[0].object.parent);
+    }
+  });
+
+  // ---------- reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('is-visible');
+    });
+  }, { threshold: 0.3 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---------- resize ----------
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // ---------- loop ----------
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const dt = clock.getDelta();
+    const t = clock.getElapsedTime();
+
+    camera.position.z += (targetZ - camera.position.z) * 0.06;
+    camera.position.x += ((mouseX * 1.4) - camera.position.x) * 0.03;
+    camera.position.y += ((-mouseY * 1.0) - camera.position.y) * 0.03;
+
+    fragments.forEach(f => {
+      f.rotation.x += f.userData.spin.x * dt;
+      f.rotation.y += f.userData.spin.y * dt;
+      f.rotation.z += f.userData.spin.z * dt;
+    });
+
+    navCrystals.forEach(m => {
+      m.userData.hoverAmt = THREE.MathUtils.lerp(m.userData.hoverAmt, m.userData.hoverTarget, 0.12);
+      m.userData.openAmt = THREE.MathUtils.lerp(m.userData.openAmt, m.userData.openTarget, 0.09);
+      const amt = m.userData.hoverAmt;
+      const oAmt = m.userData.openAmt;
+
+      m.scale.setScalar(m.userData.baseScale * (1 + 0.28 * amt) * (1 + 1.8 * oAmt));
+      m.userData.ownMat.opacity = 0.82 * (1 - oAmt);
+      m.userData.edgeMat.opacity = (0.85 + 0.15 * amt) * (1 - oAmt);
+      m.userData.edgeMat.color.setRGB(1, 1, 1).lerp(new THREE.Color(0x3ECFB2), amt * 0.85);
+      m.userData.halo.material.opacity = Math.max(0.5 * amt, oAmt * 0.9 * (1 - oAmt) * 2.2);
+      m.userData.halo.scale.setScalar(3.4 + amt * 1.2 + oAmt * 3);
+
+      if (oAmt > 0.9 && !m.userData.modalShown) {
+        showModal(m);
+      }
+    });
+
+    sparkles.forEach(s => {
+      const k = 0.55 + 0.55 * Math.sin(t * s.userData.speed + s.userData.phase);
+      const kc = Math.max(0.15, Math.min(1.3, k));
+      s.material.opacity = kc;
+      s.scale.setScalar(s.userData.baseScale * (0.75 + kc * 0.5));
+    });
+
+    starsFar.rotation.y += 0.0006 * dt;
+    starsNear.rotation.y -= 0.0009 * dt;
+    starsFar.material.uniforms.uTime.value = t;
+    starsNear.material.uniforms.uTime.value = t;
+
+    lightPink.intensity = 6 + Math.sin(t * 0.7) * 1.4;
+    lightViolet.intensity = 5 + Math.cos(t * 0.5) * 1.2;
+
+    renderer.render(scene, camera);
+  }
+
+  onScroll();
+  animate();
+})();
+</script>
+</body>
+</html>
