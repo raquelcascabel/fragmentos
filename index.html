@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fragmentos en el vacío</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script src="adaptive-video.js"></script>
 <style>
   :root {
     --bg: #080D1A;
@@ -117,13 +119,11 @@
   </div>
 
   <!--
-    PON AQUÍ TU VÍDEO: sustituye el src de abajo por el tuyo
-    (enlace de Cloudinary, o el nombre del archivo si lo subes
-    a la misma carpeta que este HTML).
+    PON AQUÍ TU VÍDEO: cambia INTRO_VIDEO_URL más abajo en el script
+    por tu enlace de Cloudinary.
   -->
   <video
     id="introVideo"
-    src="https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4"
     muted
     playsinline
     preload="auto"
@@ -134,11 +134,14 @@
 <script>
   // A dónde va una vez termina el vídeo (o si el usuario pulsa "Saltar intro")
   const DESTINO = 'fragmentos-cristal.html';
+  const INTRO_VIDEO_URL = 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4';
 
   const loader = document.getElementById('loader');
   const video = document.getElementById('introVideo');
   const skipLink = document.getElementById('skipIntro');
   skipLink.setAttribute('href', DESTINO);
+
+  attachAdaptiveVideo(video, INTRO_VIDEO_URL);
 
   let started = false;
 
