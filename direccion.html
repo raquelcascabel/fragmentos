@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dirección — Raquel Bello</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="pagina-seccion.css">
+<script src="adaptive-video.js"></script>
+<style>
+  .video-wrap { max-width: 900px; margin-bottom: 3rem; }
+  .video-wrap .ctp-video { width: 100%; aspect-ratio: 16 / 9; border: 1px solid rgba(232, 236, 244, 0.14); }
+</style>
+</head>
+<body>
+  <a class="back-link" href="fragmentos-cristal.html"><span>←</span> Volver al recorrido</a>
+
+  <header>
+    <div class="eyebrow">04 — Dirección</div>
+    <h1>Una historia contada de principio a fin</h1>
+  </header>
+
+  <div class="video-wrap" id="videoWrap"></div>
+
+  <article>
+    <p>Cortometraje de stop-motion con figuras de plastilina, con crítica política y social como tema de fondo.</p>
+    <p>Guion, dirección, construcción de escena, animación y montaje: todo el proceso, de principio a fin, hecho en solitario.</p>
+  </article>
+
+  <footer>Raquel Bello · Dirección</footer>
+
+  <script>
+    const VIDEO_URL = 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784122696/Secuencia_Trump_bananas_1_comprimido_mpdnb6.mp4';
+    document.getElementById('videoWrap').appendChild(createClickToPlayVideo(VIDEO_URL, { lightbox: true }));
+  </script>
+</body>
+</html>

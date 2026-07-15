@@ -983,7 +983,7 @@
       eyebrow: '04 — Dirección',
       title: 'Una historia contada de principio a fin',
       text: 'Cortometraje en stop-motion de plastilina: guion, dirección, construcción de escena y montaje, todo propio.',
-      video: null
+      video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784122696/Secuencia_Trump_bananas_1_comprimido_mpdnb6.mp4'
     }
   };
 
@@ -1129,7 +1129,7 @@
       // un único vídeo (reel o pieza)
       const wrap = document.createElement('div');
       wrap.className = 'modal-video-single';
-      wrap.appendChild(createClickToPlayVideo(data.video));
+      wrap.appendChild(createClickToPlayVideo(data.video, { lightbox: true }));
       modalMedia.appendChild(wrap);
     } else {
       // todavía no hay vídeo para esta sección
