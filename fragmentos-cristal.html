@@ -235,8 +235,8 @@
   }
 
   .side-nav a span {
-    width: 7px;
-    height: 7px;
+    width: 7.7px;
+    height: 7.7px;
     border-radius: 50%;
     background: rgba(232, 236, 244, 0.4);
     transition: background 0.3s ease, transform 0.3s ease;
@@ -371,12 +371,12 @@
     position: absolute;
     top: 1.2rem;
     right: 1.2rem;
-    width: 34px;
-    height: 34px;
+    width: 37px;
+    height: 37px;
     border: 1px solid rgba(232, 236, 244, 0.25);
     background: transparent;
     color: var(--text);
-    font-size: 0.9rem;
+    font-size: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -457,6 +457,12 @@
   }
 
   .modal-project-link.visible { display: inline-block; }
+
+  .modal-video-figure .modal-project-link {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.68rem;
+  }
 
   .modal-project-link:hover { opacity: 0.75; }
 
@@ -1019,14 +1025,14 @@
       videoItems: [
         {
           video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
-          caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).'
+          caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).',
+          link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
         },
         {
           video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4',
           caption: 'Animación de avatar generada con IA (Dola/Vidu), montada en Premiere.'
         }
-      ],
-      link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
+      ]
     },
     'sec-direccion': {
       eyebrow: '04 — Dirección',
@@ -1165,7 +1171,9 @@
     modalTitle.textContent = data.title;
     modalText.textContent = data.text;
 
-    if (data.link) {
+    // el enlace de sección (data.link a nivel general) solo se usa si la
+    // sección no tiene ya un enlace específico por vídeo (data.videoItems)
+    if (data.link && !data.videoItems) {
       modalLink.textContent = data.link.label;
       modalLink.href = data.link.url;
       modalLink.classList.add('visible');
@@ -1186,6 +1194,15 @@
         const caption = document.createElement('figcaption');
         caption.textContent = item.caption;
         figure.appendChild(caption);
+        if (item.link) {
+          const link = document.createElement('a');
+          link.className = 'modal-project-link visible';
+          link.href = item.link.url;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = item.link.label;
+          figure.appendChild(link);
+        }
         grid.appendChild(figure);
       });
       modalMedia.appendChild(grid);

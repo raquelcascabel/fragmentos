@@ -25,8 +25,8 @@
     color: var(--text-dim);
   }
   .project-link {
-    display: inline-block;
-    margin-bottom: 2.4rem;
+    display: block;
+    margin-top: 0.7rem;
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.78rem;
     letter-spacing: 0.16em;
@@ -38,7 +38,7 @@
 </style>
 </head>
 <body>
-  <a class="back-link" href="fragmentos-cristal.html"><span>←</span> Volver al recorrido</a>
+  <a class="back-link" href="fragmentos-cristal.html#sec-ia"><span>←</span> Volver al recorrido</a>
 
   <header>
     <div class="eyebrow">03 — IA</div>
@@ -46,7 +46,6 @@
   </header>
 
   <div class="clip-grid" id="clipGrid"></div>
-  <a class="project-link" href="https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/" target="_blank" rel="noopener">Ver el cuento completo →</a>
 
   <article>
     <p>Dos formas distintas de trabajar con IA en el proceso creativo.</p>
@@ -58,7 +57,8 @@
     const ITEMS = [
       {
         url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
-        caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).'
+        caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).',
+        link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
       },
       {
         url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4',
@@ -73,6 +73,15 @@
       const caption = document.createElement('figcaption');
       caption.textContent = item.caption;
       figure.appendChild(caption);
+      if (item.link) {
+        const link = document.createElement('a');
+        link.className = 'project-link';
+        link.href = item.link.url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = item.link.label;
+        figure.appendChild(link);
+      }
       clipGrid.appendChild(figure);
     });
   </script>
