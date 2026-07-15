@@ -59,6 +59,7 @@
   }
 
   global.attachAdaptiveVideo = attachAdaptiveVideo;
+  global.buildMp4Url = buildMp4Url;
 
   // ---------- miniatura + botón de play ----------
   function injectClickToPlayStyles() {
