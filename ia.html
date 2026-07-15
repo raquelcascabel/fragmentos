@@ -8,8 +8,15 @@
 <link rel="stylesheet" href="pagina-seccion.css">
 <script src="adaptive-video.js"></script>
 <style>
-  .video-wrap { max-width: 900px; margin-bottom: 1.4rem; }
-  .video-wrap .ctp-video { width: 100%; aspect-ratio: 16 / 9; border: 1px solid rgba(232, 236, 244, 0.14); }
+  .clip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 900px;
+    margin-bottom: 1.4rem;
+  }
+  .clip-grid .ctp-video { border: 1px solid rgba(232, 236, 244, 0.14); }
   .project-link {
     display: inline-block;
     margin-bottom: 2.4rem;
@@ -31,19 +38,23 @@
     <h1>El vacío también tiene textura</h1>
   </header>
 
-  <div class="video-wrap" id="videoWrap"></div>
+  <div class="clip-grid" id="clipGrid"></div>
   <a class="project-link" href="https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/" target="_blank" rel="noopener">Ver el cuento completo →</a>
 
   <article>
-    <p>"El murciélago Pip y la noche oscura": cuento interactivo con ilustración propia animada mediante IA (Vidu), programado a mano en HTML/CSS/JS.</p>
-    <p>El vídeo de arriba es la portada del cuento — haz clic en el enlace para vivir la experiencia interactiva completa.</p>
+    <p>Dos piezas con IA: la portada animada de "El murciélago Pip y la noche oscura" (ilustración propia + Vidu), y una animación de avatar generada con IA (Dola/Vidu), montada en Premiere.</p>
+    <p>El primer vídeo es la portada del cuento — haz clic en el enlace para vivir la experiencia interactiva completa.</p>
   </article>
 
   <footer>Raquel Bello · IA</footer>
 
   <script>
-    const VIDEO_URL = 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4';
-    document.getElementById('videoWrap').appendChild(createClickToPlayVideo(VIDEO_URL, { lightbox: true }));
+    const CLIPS = [
+      'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
+      'https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4'
+    ];
+    const clipGrid = document.getElementById('clipGrid');
+    CLIPS.forEach(url => clipGrid.appendChild(createClickToPlayVideo(url, { height: 320, lightbox: true })));
   </script>
 </body>
 </html>
