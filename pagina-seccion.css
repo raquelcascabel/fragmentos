@@ -1,7 +1,7 @@
 /* Estilos compartidos para las páginas de sección: superficie.html,
    profundidad.html, deriva.html. Misma paleta que fragmentos-cristal.html. */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
 
 :root {
   --bg: #080D1A;
@@ -19,7 +19,7 @@ body {
   font-family: 'Inter', sans-serif;
   font-weight: 300;
   min-height: 100vh;
-  padding: 8vh 8vw 10vh;
+  padding: clamp(1.5rem, 8vh, 3.5rem) clamp(1.2rem, 8vw, 4rem) clamp(2rem, 10vh, 4.5rem);
 }
 
 .back-link {
@@ -35,9 +35,15 @@ body {
   transition: color 0.3s ease, gap 0.3s ease;
 }
 
-.back-link:hover {
+.back-link:hover,
+.back-link:focus-visible {
   color: var(--accent);
   gap: 0.9rem;
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 header {
@@ -135,5 +141,5 @@ footer {
 }
 
 @media (max-width: 640px) {
-  body { padding: 6vh 7vw 8vh; }
+  body { padding: clamp(1.2rem, 6vh, 2.2rem) clamp(1rem, 7vw, 1.8rem) clamp(1.5rem, 8vh, 2.6rem); }
 }

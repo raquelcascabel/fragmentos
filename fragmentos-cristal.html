@@ -14,10 +14,33 @@
 <meta name="twitter:title" content="Raquel Bello Patricio — AI Content Creator, Video Editor & Motion Graphics">
 <meta name="twitter:description" content="Portfolio interactivo en 3D: edición de vídeo, motion graphics, VFX y creación de contenido con IA.">
 <meta name="twitter:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1784130503/avtar_fy2iti.jpg">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Raquel Bello Patricio — Portfolio">
+<link rel="canonical" href="https://www.raquelbellocreative.com/fragmentos-cristal.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Raquel Bello Patricio",
+      "url": "https://www.raquelbellocreative.com/",
+      "jobTitle": "AI Content Creator, Video Editor, Motion Designer",
+      "sameAs": ["https://www.linkedin.com/in/raquelbellopatricio"]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Fragmentos en el vacío — Portfolio interactivo",
+      "author": { "@type": "Person", "name": "Raquel Bello Patricio" },
+      "url": "https://www.raquelbellocreative.com/fragmentos-cristal.html"
+    }
+  ]
+}
+</script>
 <style>
   :root {
     --bg: #080D1A;
@@ -274,15 +297,23 @@
     transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
   }
 
-  .side-nav a:hover::before {
+  .side-nav a:hover::before,
+  .side-nav a:focus-visible::before {
     opacity: 1;
     transform: translateX(0);
     color: var(--accent);
   }
 
-  .side-nav a:hover span {
+  .side-nav a:hover span,
+  .side-nav a:focus-visible span {
     background: var(--accent);
     transform: scale(1.3);
+  }
+
+  .side-nav a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 50%;
   }
 
   @media (max-width: 640px) {
@@ -303,12 +334,19 @@
     transition: border-color 0.35s ease, transform 0.35s ease;
   }
 
-  a.block-link:hover {
+  a.block-link:hover,
+  a.block-link:focus-visible {
     border-left-color: var(--accent);
     transform: translateX(6px);
   }
 
-  a.block-link:hover h2 {
+  a.block-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  a.block-link:hover h2,
+  a.block-link:focus-visible h2 {
     color: var(--accent);
   }
 
@@ -403,9 +441,15 @@
     transition: border-color 0.3s ease, color 0.3s ease;
   }
 
-  .crystal-modal-close:hover {
+  .crystal-modal-close:hover,
+  .crystal-modal-close:focus-visible {
     border-color: var(--accent);
     color: var(--accent);
+  }
+
+  .crystal-modal-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   .crystal-modal-eyebrow {
@@ -601,11 +645,11 @@
 
 </div>
 
-<nav id="sideNav" class="side-nav">
-  <a href="#sec-edicion" data-label="Edición"><span></span></a>
-  <a href="#sec-motion" data-label="Motion Graphics / VFX"><span></span></a>
-  <a href="#sec-ia" data-label="IA"><span></span></a>
-  <a href="#sec-direccion" data-label="Dirección"><span></span></a>
+<nav id="sideNav" class="side-nav" aria-label="Navegación rápida por secciones">
+  <a href="#sec-edicion" data-label="Edición" aria-label="Ir a la sección Edición"><span></span></a>
+  <a href="#sec-motion" data-label="Motion Graphics / VFX" aria-label="Ir a la sección Motion Graphics / VFX"><span></span></a>
+  <a href="#sec-ia" data-label="IA" aria-label="Ir a la sección IA"><span></span></a>
+  <a href="#sec-direccion" data-label="Dirección" aria-label="Ir a la sección Dirección"><span></span></a>
 </nav>
 
 <div id="navTooltip" class="nav-tooltip"><span class="nav-tooltip-arrow">→</span><span id="navTooltipText"></span></div>

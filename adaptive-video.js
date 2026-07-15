@@ -125,9 +125,14 @@
         transition: transform 0.25s ease, background 0.25s ease;
         pointer-events: none;
       }
-      .ctp-video:hover .ctp-play-btn {
+      .ctp-video:hover .ctp-play-btn,
+      .ctp-video:focus-visible .ctp-play-btn {
         transform: translate(-50%, -50%) scale(1.1);
         background: rgba(62, 207, 178, 0.85);
+      }
+      .ctp-video:focus-visible {
+        outline: 2px solid #3ECFB2;
+        outline-offset: 2px;
       }
     `;
     document.head.appendChild(style);
@@ -143,7 +148,8 @@
     const wrap = document.createElement('div');
     wrap.className = 'ctp-video';
     wrap.setAttribute('role', 'button');
-    wrap.setAttribute('aria-label', 'Reproducir vídeo');
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('aria-label', options.alt || 'Reproducir vídeo');
 
     if (options.height) {
       wrap.style.height = options.height + 'px';
@@ -186,14 +192,15 @@
     btn.textContent = '▶';
     wrap.appendChild(btn);
 
-    wrap.addEventListener('click', function start() {
+    function startPlayback() {
       if (options.lightbox) {
         openVideoLightbox(originalUrl);
         return;
       }
-      wrap.removeEventListener('click', start);
       wrap.innerHTML = '';
       wrap.style.cursor = 'default';
+      wrap.removeAttribute('role');
+      wrap.removeAttribute('tabindex');
 
       const v = document.createElement('video');
       v.controls = true;
@@ -203,6 +210,14 @@
       attachAdaptiveVideo(v, originalUrl);
       v.addEventListener('loadedmetadata', () => applyRatio(v.videoWidth, v.videoHeight));
       v.play().catch(function () {});
+    }
+
+    wrap.addEventListener('click', startPlayback);
+    wrap.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        startPlayback();
+      }
     });
 
     return wrap;
@@ -253,6 +268,11 @@
         justify-content: center;
         cursor: pointer;
         font-size: 1.1rem;
+        font-family: inherit;
+      }
+      .ctp-lightbox-close:focus-visible {
+        outline: 2px solid #3ECFB2;
+        outline-offset: 2px;
       }
     `;
     document.head.appendChild(style);
@@ -260,6 +280,7 @@
 
   function openVideoLightbox(originalUrl) {
     injectLightboxStyles();
+    const triggerEl = document.activeElement;
     let overlay = document.getElementById('ctp-lightbox-global');
 
     if (!overlay) {
@@ -267,8 +288,10 @@
       overlay.id = 'ctp-lightbox-global';
       overlay.className = 'ctp-lightbox';
 
-      const closeBtn = document.createElement('div');
+      const closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
       closeBtn.className = 'ctp-lightbox-close';
+      closeBtn.setAttribute('aria-label', 'Cerrar vídeo');
       closeBtn.textContent = '✕';
       overlay.appendChild(closeBtn);
 
@@ -276,6 +299,9 @@
         overlay.classList.remove('is-open');
         const v = overlay.querySelector('video');
         if (v) v.pause();
+        if (overlay._triggerEl && overlay._triggerEl.focus) {
+          overlay._triggerEl.focus();
+        }
       }
       closeBtn.addEventListener('click', close);
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
@@ -285,6 +311,8 @@
 
       document.body.appendChild(overlay);
     }
+
+    overlay._triggerEl = triggerEl;
 
     const oldVideo = overlay.querySelector('video');
     if (oldVideo) oldVideo.remove();
@@ -298,6 +326,8 @@
     v.play().catch(function () {});
 
     overlay.classList.add('is-open');
+    const closeBtnEl = overlay.querySelector('.ctp-lightbox-close');
+    if (closeBtnEl) closeBtnEl.focus();
   }
 
   global.openVideoLightbox = openVideoLightbox;
