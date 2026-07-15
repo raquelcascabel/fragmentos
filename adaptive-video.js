@@ -16,10 +16,26 @@
 */
 (function (global) {
   function parseCloudinaryUrl(url) {
-    // https://res.cloudinary.com/<cloud>/video/upload/[transform/]v<version>/<public_id>.<ext>
-    const m = url.match(/^https:\/\/res\.cloudinary\.com\/([^/]+)\/video\/upload\/(?:([^/]+)\/)?(v\d+\/)?(.+)\.[a-zA-Z0-9]+$/);
+    // https://res.cloudinary.com/<cloud>/video/upload/[transform1/][transform2/]...[v<version>/]<public_id>.<ext>
+    // Se analiza por segmentos en vez de con una única expresión regular,
+    // para que da igual cuántas transformaciones vengan ya incrustadas en
+    // la URL (por ejemplo, un enlace copiado de otra web que ya usaba
+    // "q_auto:best/vc_auto/..." antes de la versión).
+    const m = url.match(/^https:\/\/res\.cloudinary\.com\/([^/]+)\/video\/upload\/(.+)\.[a-zA-Z0-9]+$/);
     if (!m) return null;
-    return { cloud: m[1], version: m[3] || '', publicIdPath: m[4] };
+    const cloud = m[1];
+    const rest = m[2];
+    const segments = rest.split('/');
+    const versionIndex = segments.findIndex(s => /^v\d+$/.test(s));
+    let version, publicIdPath;
+    if (versionIndex !== -1) {
+      version = segments[versionIndex] + '/';
+      publicIdPath = segments.slice(versionIndex + 1).join('/');
+    } else {
+      version = '';
+      publicIdPath = segments[segments.length - 1];
+    }
+    return { cloud: cloud, version: version, publicIdPath: publicIdPath };
   }
 
   function buildMp4Url(originalUrl) {
