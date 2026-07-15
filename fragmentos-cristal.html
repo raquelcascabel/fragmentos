@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fragmentos en el vacío</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -211,6 +212,62 @@
   body.nav-hover { cursor: pointer; }
   body.modal-open { overflow: hidden; }
 
+  .side-nav {
+    position: fixed;
+    top: 50%;
+    right: 2.2rem;
+    transform: translateY(-50%);
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    align-items: flex-end;
+  }
+
+  .side-nav a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+  }
+
+  .side-nav a span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(232, 236, 244, 0.35);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .side-nav a::before {
+    content: attr(data-label);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .side-nav a:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .side-nav a:hover span {
+    background: var(--accent);
+    transform: scale(1.3);
+  }
+
+  @media (max-width: 640px) {
+    .side-nav { right: 1.1rem; gap: 0.9rem; }
+    .side-nav a::before { display: none; }
+  }
+
   a.block-link {
     display: block;
     text-decoration: none;
@@ -383,6 +440,66 @@
     font-weight: 300;
   }
 
+  .modal-video-single {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid rgba(232, 236, 244, 0.1);
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .modal-video-single video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .modal-video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-video-grid video {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    background: #000;
+    border: 1px solid rgba(232, 236, 244, 0.1);
+    display: block;
+  }
+
+  .modal-coming-soon {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background: linear-gradient(135deg, rgba(139, 127, 245, 0.1), rgba(62, 207, 178, 0.06));
+    border: 1px dashed rgba(232, 236, 244, 0.2);
+    margin-bottom: 1rem;
+  }
+
+  .modal-coming-soon-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(232, 236, 244, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+  }
+
+  .modal-coming-soon p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
   @media (max-width: 640px) {
     .crystal-modal-panel { padding: 1.8rem 1.6rem 2.2rem; max-height: 90vh; }
   }
@@ -396,9 +513,9 @@
 
   <section class="section align-left hero">
     <div class="block is-visible">
-      <div class="eyebrow">Descenso · 000</div>
-      <h1>Fragmentos<br>en el vacío</h1>
-      <p>Un recorrido entre cristal y estrellas.<br>Desplázate para atravesarlo.</p>
+      <div class="eyebrow">Raquel Bello</div>
+      <h1>AI Content Creator<br>Video Editor · Motion<br>Visual Storytelling</h1>
+      <p>Un recorrido entre cristal y estrellas. Cada fragmento, un trabajo distinto.<br>Desplázate para atravesarlo.</p>
     </div>
     <div class="scroll-hint" id="scrollHint">
       <span class="line"></span>
@@ -406,45 +523,64 @@
     </div>
   </section>
 
-  <section class="section align-right" id="sec-superficie">
-    <a class="block reveal block-link" href="superficie.html">
+  <section class="section align-right" id="sec-edicion">
+    <a class="block reveal block-link" href="edicion.html">
       <div class="divider"></div>
-      <div class="eyebrow">01 — Superficie</div>
+      <div class="eyebrow">01 — Edición</div>
       <h2>Lo que se rompe, se multiplica</h2>
-      <p>Cada arista devuelve una imagen distinta. Ninguna es más cierta que las demás — sólo cambia el ángulo desde el que se mira.</p>
-      <span class="block-cta">Ver vídeo <span>→</span></span>
+      <p>Cada corte cambia el ritmo de lo que viene después. Piezas para redes, montadas para que nadie suelte el móvil a mitad.</p>
+      <span class="block-cta">Ver clips <span>→</span></span>
     </a>
   </section>
 
-  <section class="section align-left" id="sec-profundidad">
-    <a class="block reveal block-link" href="profundidad.html">
+  <section class="section align-left" id="sec-motion">
+    <a class="block reveal block-link" href="motion.html">
       <div class="divider"></div>
-      <div class="eyebrow">02 — Profundidad</div>
+      <div class="eyebrow">02 — Motion</div>
       <h2>Cada ángulo, una versión distinta</h2>
-      <p>El cristal no oculta lo que hay detrás, lo distorsiona. Entre una cara y la siguiente hay siempre una pausa de vacío.</p>
-      <span class="block-cta">Ver vídeo <span>→</span></span>
+      <p>Gráficos que se mueven con intención, no de adorno. Marca, tipografía y ritmo trabajando juntos.</p>
+      <span class="block-cta">Ver reel <span>→</span></span>
     </a>
   </section>
 
-  <section class="section align-right" id="sec-deriva">
-    <a class="block reveal block-link" href="deriva.html">
+  <section class="section align-right" id="sec-ia">
+    <a class="block reveal block-link" href="ia.html">
       <div class="divider"></div>
-      <div class="eyebrow">03 — Deriva</div>
+      <div class="eyebrow">03 — IA</div>
       <h2>El vacío también tiene textura</h2>
-      <p>No hay arriba ni abajo cuando todo flota. Sólo la luz que roza un filo y luego se apaga, un poco más lejos.</p>
+      <p>Generación de imagen y vídeo con IA, después montado y editado a mano — la herramienta nueva, el criterio de siempre.</p>
+      <span class="block-cta">Ver proyecto <span>→</span></span>
+    </a>
+  </section>
+
+  <section class="section align-left" id="sec-direccion">
+    <a class="block reveal block-link" href="direccion.html">
+      <div class="divider"></div>
+      <div class="eyebrow">04 — Dirección</div>
+      <h2>Una historia contada de principio a fin</h2>
+      <p>Guion, dirección, construcción de escena y montaje — todo en las mismas manos. Stop-motion, plastilina, y una idea con intención.</p>
       <span class="block-cta">Ver vídeo <span>→</span></span>
     </a>
   </section>
 
   <footer class="section align-center" id="sec-fin">
     <div class="block reveal">
-      <h2>Fin del recorrido</h2>
-      <p>Vuelve a subir para atravesarlo de nuevo, cada vez desde un ángulo distinto.</p>
+      <div class="eyebrow">Hablemos</div>
+      <h2>Raquel Bello Patricio</h2>
+      <p>AI Content Creator · Video Editor · Motion Graphics · Visual Storytelling</p>
+      <p style="margin-top:0.6rem;"><a href="https://www.linkedin.com/in/raquelbellopatricio" style="color:var(--accent);text-decoration:none;">LinkedIn ↗</a> · <a href="mailto:hola@raquelbellocreative.com" style="color:var(--accent);text-decoration:none;">hola@raquelbellocreative.com</a></p>
     </div>
     <div class="signature reveal">— fragmentos / 2026</div>
   </footer>
 
 </div>
+
+<nav id="sideNav" class="side-nav">
+  <a href="#sec-edicion" data-label="Edición"><span></span></a>
+  <a href="#sec-motion" data-label="Motion"><span></span></a>
+  <a href="#sec-ia" data-label="IA"><span></span></a>
+  <a href="#sec-direccion" data-label="Dirección"><span></span></a>
+</nav>
 
 <div id="navTooltip" class="nav-tooltip"><span class="nav-tooltip-arrow">→</span><span id="navTooltipText"></span></div>
 
@@ -454,17 +590,13 @@
     <button class="crystal-modal-close" id="crystalModalClose" aria-label="Cerrar">✕</button>
     <div class="crystal-modal-eyebrow" id="modalEyebrow"></div>
     <h3 id="modalTitle"></h3>
-    <div class="crystal-modal-media">
-      <video id="modalVideo" controls playsinline preload="metadata"></video>
-    </div>
-    <div class="crystal-modal-gallery">
-      <div class="crystal-modal-img-ph"></div>
-      <div class="crystal-modal-img-ph"></div>
-    </div>
+    <div id="modalMedia"></div>
     <p id="modalText"></p>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script src="adaptive-video.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function() {
@@ -817,36 +949,46 @@
   // de acento y aparece un halo + una etiqueta, para que quede claro que
   // son botones. Al hacer clic, el cristal se abre y da paso a un
   // habitáculo con vídeo, imágenes y texto de esa sección.
-  const CLOUDINARY_DEMO_VIDEO = 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4';
-
+  // Nota: rellena "video" (uno) o "videos" (varios clips) con tus enlaces
+  // de Cloudinary reales. Mientras una sección no tenga vídeo, se muestra
+  // como "próximamente" en el habitáculo, sin romper nada.
   const sectionContent = {
-    'sec-superficie': {
-      eyebrow: '01 — Superficie',
+    'sec-edicion': {
+      eyebrow: '01 — Edición',
       title: 'Lo que se rompe, se multiplica',
-      text: 'Cada arista devuelve una imagen distinta. Ninguna es más cierta que las demás — sólo cambia el ángulo desde el que se mira.',
-      video: CLOUDINARY_DEMO_VIDEO
+      text: 'Piezas para clientes como EWS y NZI: grabación, montaje y rótulos propios, pensados para captar la atención en redes desde el primer segundo.',
+      videos: [
+        'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111529/EWS_ver01_dic3_m9vcco.mov',
+        'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111446/EWS_ver6_dic1_onsfqh.mov',
+        'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111434/EWS_ver2_dic2_mdtfhr.mov',
+        'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111902/nzi_universe_5_lqmlfx.mov'
+      ]
     },
-    'sec-profundidad': {
-      eyebrow: '02 — Profundidad',
+    'sec-motion': {
+      eyebrow: '02 — Motion',
       title: 'Cada ángulo, una versión distinta',
-      text: 'El cristal no oculta lo que hay detrás, lo distorsiona. Entre una cara y la siguiente hay siempre una pausa de vacío.',
-      video: CLOUDINARY_DEMO_VIDEO
+      text: 'Reel de motion graphics en construcción — gráficos animados, tipografía en movimiento, identidad de marca.',
+      video: null
     },
-    'sec-deriva': {
-      eyebrow: '03 — Deriva',
+    'sec-ia': {
+      eyebrow: '03 — IA',
       title: 'El vacío también tiene textura',
-      text: 'No hay arriba ni abajo cuando todo flota. Sólo la luz que roza un filo y luego se apaga, un poco más lejos.',
-      video: CLOUDINARY_DEMO_VIDEO
+      text: 'Animación generada con IA (Dola / Vidu) y montada a mano en Premiere — la herramienta cambia, el criterio de montaje no.',
+      video: null
+    },
+    'sec-direccion': {
+      eyebrow: '04 — Dirección',
+      title: 'Una historia contada de principio a fin',
+      text: 'Cortometraje en stop-motion de plastilina: guion, dirección, construcción de escena y montaje, todo propio.',
+      video: null
     }
   };
-  // Nota: los tres usan el mismo vídeo de ejemplo que diste — sustituye
-  // "video" en cada entrada de sectionContent por el vídeo real de esa
-  // sección cuando lo tengas.
 
   const navLinks = [
-    { index: 2, target: 'sec-superficie', label: 'Superficie' },
-    { index: 6, target: 'sec-profundidad', label: 'Profundidad' },
-    { index: 10, target: 'sec-deriva', label: 'Deriva' }
+    { index: 1, target: 'sec-edicion', label: 'Edición' },
+    { index: 4, target: 'sec-motion', label: 'Motion' },
+    { index: 7, target: 'sec-ia', label: 'IA' },
+    { index: 10, target: 'sec-direccion', label: 'Dirección' }
   ];
   const navCrystals = [];
 
@@ -952,7 +1094,7 @@
   const modalEyebrow = document.getElementById('modalEyebrow');
   const modalTitle = document.getElementById('modalTitle');
   const modalText = document.getElementById('modalText');
-  const modalVideo = document.getElementById('modalVideo');
+  const modalMedia = document.getElementById('modalMedia');
   let currentOpenMesh = null;
 
   function openCrystal(mesh) {
@@ -967,9 +1109,41 @@
     modalEyebrow.textContent = data.eyebrow;
     modalTitle.textContent = data.title;
     modalText.textContent = data.text;
-    if (modalVideo.getAttribute('src') !== data.video) {
-      modalVideo.setAttribute('src', data.video);
+
+    modalMedia.innerHTML = '';
+
+    if (data.videos && data.videos.length) {
+      // varios clips cortos (p. ej. piezas de redes sociales)
+      const grid = document.createElement('div');
+      grid.className = 'modal-video-grid';
+      data.videos.forEach(src => {
+        const v = document.createElement('video');
+        v.controls = true;
+        v.playsInline = true;
+        v.preload = 'metadata';
+        grid.appendChild(v);
+        attachAdaptiveVideo(v, src);
+      });
+      modalMedia.appendChild(grid);
+    } else if (data.video) {
+      // un único vídeo (reel o pieza)
+      const wrap = document.createElement('div');
+      wrap.className = 'modal-video-single';
+      const v = document.createElement('video');
+      v.controls = true;
+      v.playsInline = true;
+      v.preload = 'metadata';
+      wrap.appendChild(v);
+      attachAdaptiveVideo(v, data.video);
+      modalMedia.appendChild(wrap);
+    } else {
+      // todavía no hay vídeo para esta sección
+      const soon = document.createElement('div');
+      soon.className = 'modal-coming-soon';
+      soon.innerHTML = '<div class="modal-coming-soon-icon">▶</div><p>Próximamente</p>';
+      modalMedia.appendChild(soon);
     }
+
     crystalModal.classList.add('is-open');
     crystalModal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
@@ -980,7 +1154,13 @@
     crystalModal.classList.remove('is-open');
     crystalModal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
-    modalVideo.pause();
+    modalMedia.querySelectorAll('video').forEach(v => {
+      v.pause();
+      if (v._hlsInstance) {
+        v._hlsInstance.destroy();
+        v._hlsInstance = null;
+      }
+    });
     if (currentOpenMesh) {
       currentOpenMesh.userData.openTarget = 0;
       currentOpenMesh.userData.modalShown = false;

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edición — Raquel Bello</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="pagina-seccion.css">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script src="adaptive-video.js"></script>
+<style>
+  .clip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin-bottom: 3rem;
+  }
+  .clip-grid video {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    background: #000;
+    border: 1px solid rgba(232, 236, 244, 0.14);
+    display: block;
+  }
+  .clip-placeholder {
+    aspect-ratio: 9 / 16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #0D1526, #080D1A);
+    border: 1px dashed rgba(232, 236, 244, 0.2);
+    color: var(--text-dim);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1rem;
+  }
+</style>
+</head>
+<body>
+  <a class="back-link" href="fragmentos-cristal.html"><span>←</span> Volver al recorrido</a>
+
+  <header>
+    <div class="eyebrow">01 — Edición</div>
+    <h1>Lo que se rompe, se multiplica</h1>
+  </header>
+
+  <!-- Los enlaces reales de Cloudinary se cargan más abajo, con
+       streaming adaptativo (mejor calidad según la conexión). -->
+  <div class="clip-grid">
+    <video id="clip1" controls playsinline preload="metadata"></video>
+    <video id="clip2" controls playsinline preload="metadata"></video>
+    <video id="clip3" controls playsinline preload="metadata"></video>
+    <video id="clip4" controls playsinline preload="metadata"></video>
+  </div>
+
+  <article>
+    <p>Piezas para clientes como EWS y NZI: grabación, montaje y rótulos propios, pensados para captar la atención en redes desde el primer segundo.</p>
+    <p>Software: Premiere Pro, DaVinci Resolve. Experiencia previa en postproducción de televisión (Boomerang TV, Telecinco).</p>
+  </article>
+
+  <footer>Raquel Bello · Edición</footer>
+
+  <script>
+    attachAdaptiveVideo(document.getElementById('clip1'), 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111529/EWS_ver01_dic3_m9vcco.mov');
+    attachAdaptiveVideo(document.getElementById('clip2'), 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111446/EWS_ver6_dic1_onsfqh.mov');
+    attachAdaptiveVideo(document.getElementById('clip3'), 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111434/EWS_ver2_dic2_mdtfhr.mov');
+    attachAdaptiveVideo(document.getElementById('clip4'), 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111902/nzi_universe_5_lqmlfx.mov');
+  </script>
+</body>
+</html>
