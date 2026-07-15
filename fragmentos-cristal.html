@@ -444,6 +444,22 @@
     font-weight: 300;
   }
 
+  .modal-project-link {
+    display: none;
+    margin-top: 1.1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .modal-project-link.visible { display: inline-block; }
+
+  .modal-project-link:hover { opacity: 0.75; }
+
   .modal-video-single {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -593,6 +609,7 @@
     <h3 id="modalTitle"></h3>
     <div id="modalMedia"></div>
     <p id="modalText"></p>
+    <a id="modalLink" class="modal-project-link" href="#" target="_blank" rel="noopener"></a>
   </div>
 </div>
 
@@ -976,8 +993,9 @@
     'sec-ia': {
       eyebrow: '03 — IA',
       title: 'El vacío también tiene textura',
-      text: 'Animación generada con IA (Dola / Vidu) y montada a mano en Premiere — la herramienta cambia, el criterio de montaje no.',
-      video: null
+      text: '"El murciélago Pip y la noche oscura": cuento interactivo con ilustración propia animada mediante IA (Vidu), programado a mano en HTML/CSS/JS.',
+      video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
+      link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
     },
     'sec-direccion': {
       eyebrow: '04 — Dirección',
@@ -1099,6 +1117,7 @@
   const modalEyebrow = document.getElementById('modalEyebrow');
   const modalTitle = document.getElementById('modalTitle');
   const modalText = document.getElementById('modalText');
+  const modalLink = document.getElementById('modalLink');
   const modalMedia = document.getElementById('modalMedia');
   let currentOpenMesh = null;
 
@@ -1114,6 +1133,14 @@
     modalEyebrow.textContent = data.eyebrow;
     modalTitle.textContent = data.title;
     modalText.textContent = data.text;
+
+    if (data.link) {
+      modalLink.textContent = data.link.label;
+      modalLink.href = data.link.url;
+      modalLink.classList.add('visible');
+    } else {
+      modalLink.classList.remove('visible');
+    }
 
     modalMedia.innerHTML = '';
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA — Raquel Bello</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="pagina-seccion.css">
+<script src="adaptive-video.js"></script>
+<style>
+  .video-wrap { max-width: 900px; margin-bottom: 1.4rem; }
+  .video-wrap .ctp-video { width: 100%; aspect-ratio: 16 / 9; border: 1px solid rgba(232, 236, 244, 0.14); }
+  .project-link {
+    display: inline-block;
+    margin-bottom: 2.4rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .project-link:hover { opacity: 0.75; }
+</style>
+</head>
+<body>
+  <a class="back-link" href="fragmentos-cristal.html"><span>←</span> Volver al recorrido</a>
+
+  <header>
+    <div class="eyebrow">03 — IA</div>
+    <h1>El vacío también tiene textura</h1>
+  </header>
+
+  <div class="video-wrap" id="videoWrap"></div>
+  <a class="project-link" href="https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/" target="_blank" rel="noopener">Ver el cuento completo →</a>
+
+  <article>
+    <p>"El murciélago Pip y la noche oscura": cuento interactivo con ilustración propia animada mediante IA (Vidu), programado a mano en HTML/CSS/JS.</p>
+    <p>El vídeo de arriba es la portada del cuento — haz clic en el enlace para vivir la experiencia interactiva completa.</p>
+  </article>
+
+  <footer>Raquel Bello · IA</footer>
+
+  <script>
+    const VIDEO_URL = 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4';
+    document.getElementById('videoWrap').appendChild(createClickToPlayVideo(VIDEO_URL, { lightbox: true }));
+  </script>
+</body>
+</html>
