@@ -36,6 +36,24 @@
     return base + '/so_1,q_auto,f_auto/' + parsed.version + parsed.publicIdPath + '.jpg';
   }
 
+  // Para vídeos a pantalla completa (como la intro): en pantallas estrechas
+  // pide a Cloudinary un recorte 9:16 con encuadre automático (mantiene el
+  // sujeto centrado, no lo aplasta ni lo corta a lo tonto) y en menor
+  // resolución — mucho más rápido de cargar en móvil que servir el máster
+  // panorámico completo y recortarlo a lo bruto con CSS.
+  function buildResponsiveFullscreenUrl(originalUrl) {
+    const parsed = parseCloudinaryUrl(originalUrl);
+    if (!parsed) return originalUrl;
+    const base = 'https://res.cloudinary.com/' + parsed.cloud + '/video/upload';
+    const isNarrow = window.innerWidth < window.innerHeight;
+    const transform = isNarrow
+      ? 'c_fill,ar_9:16,g_auto,w_780,q_auto,f_auto'
+      : 'q_auto,f_auto';
+    return base + '/' + transform + '/' + parsed.version + parsed.publicIdPath + '.mp4';
+  }
+
+  global.buildResponsiveFullscreenUrl = buildResponsiveFullscreenUrl;
+
   function attachAdaptiveVideo(videoEl, originalUrl) {
     videoEl.src = buildMp4Url(originalUrl);
   }
@@ -55,6 +73,8 @@
         background: #000;
         overflow: hidden;
         cursor: pointer;
+        transition: width 0.3s ease, height 0.3s ease;
+        max-width: 100%;
       }
       .ctp-video .ctp-thumb {
         width: 100%;
@@ -74,13 +94,13 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 52px;
-        height: 52px;
+        width: 57px;
+        height: 57px;
         border-radius: 50%;
         background: rgba(8, 13, 26, 0.55);
         border: 1px solid rgba(255, 255, 255, 0.55);
         color: #fff;
-        font-size: 1.05rem;
+        font-size: 1.16rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -118,9 +138,19 @@
     }
 
     function applyRatio(w, h) {
-      if (options.height && w && h) {
-        wrap.style.width = Math.round(options.height * (w / h)) + 'px';
+      if (!options.height || !w || !h) return;
+      // límite de ancho disponible (para que un vídeo horizontal no se
+      // salga de la pantalla en móvil): el menor entre el ancho ideal y
+      // el ancho de ventana disponible, con un margen de seguridad
+      const maxWidth = Math.min(window.innerWidth - 32, 640);
+      let width = options.height * (w / h);
+      let height = options.height;
+      if (width > maxWidth) {
+        width = maxWidth;
+        height = maxWidth * (h / w);
       }
+      wrap.style.width = Math.round(width) + 'px';
+      wrap.style.height = Math.round(height) + 'px';
     }
 
     const thumbUrl = buildThumbnailUrl(originalUrl);
@@ -195,8 +225,8 @@
         position: absolute;
         top: 1.4rem;
         right: 1.6rem;
-        width: 38px;
-        height: 38px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
         border: 1px solid rgba(255,255,255,0.4);
         background: rgba(0,0,0,0.4);
@@ -205,7 +235,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
     `;
     document.head.appendChild(style);

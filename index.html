@@ -173,7 +173,7 @@
   const soundIcon = document.getElementById('soundIcon');
   skipLink.setAttribute('href', DESTINO);
 
-  attachAdaptiveVideo(video, INTRO_VIDEO_URL);
+  video.src = buildResponsiveFullscreenUrl(INTRO_VIDEO_URL);
 
   soundToggle.addEventListener('click', () => {
     video.muted = !video.muted;
@@ -197,11 +197,12 @@
     }, 1200);
   }
 
-  // en cuanto el vídeo puede reproducirse sin cortes, arrancamos
-  video.addEventListener('canplaythrough', playIntro, { once: true });
+  // arrancamos en cuanto hay suficiente para empezar (no esperamos a tener
+  // todo el vídeo buffereado, así se percibe mucho más rápido)
+  video.addEventListener('canplay', playIntro, { once: true });
 
-  // por si tarda demasiado en cargar, arrancamos igualmente a los 6s
-  setTimeout(playIntro, 6000);
+  // por si tarda demasiado en cargar, arrancamos igualmente a los 4s
+  setTimeout(playIntro, 4000);
 
   // si algo falla al cargar el vídeo, no dejamos a nadie atascado
   video.addEventListener('error', () => goToDestino());
