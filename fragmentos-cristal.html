@@ -486,11 +486,12 @@
 
   .modal-video-figure {
     margin: 0;
-    max-width: 200px;
+    max-width: 260px;
   }
 
   .modal-video-figure figcaption {
     margin-top: 0.5rem;
+    max-width: 260px;
     font-size: 0.72rem;
     line-height: 1.4;
     color: var(--text-dim);
@@ -1181,7 +1182,7 @@
       data.videoItems.forEach(item => {
         const figure = document.createElement('figure');
         figure.className = 'modal-video-figure';
-        figure.appendChild(createClickToPlayVideo(item.video, { height: 220, lightbox: true }));
+        figure.appendChild(createClickToPlayVideo(item.video, { height: 140, lightbox: true }));
         const caption = document.createElement('figcaption');
         caption.textContent = item.caption;
         figure.appendChild(caption);
