@@ -484,6 +484,18 @@
     border: 1px solid rgba(232, 236, 244, 0.1);
   }
 
+  .modal-video-figure {
+    margin: 0;
+    max-width: 200px;
+  }
+
+  .modal-video-figure figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: var(--text-dim);
+  }
+
   .modal-coming-soon {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -553,7 +565,7 @@
   <section class="section align-left" id="sec-motion">
     <a class="block reveal block-link" href="motion.html">
       <div class="divider"></div>
-      <div class="eyebrow">02 — Motion Graphics</div>
+      <div class="eyebrow">02 — Motion Graphics / VFX</div>
       <h2>Cada ángulo, una versión distinta</h2>
       <p>Gráficos que se mueven con intención, no de adorno. Marca, tipografía y ritmo trabajando juntos.</p>
       <span class="block-cta">Ver reel <span>→</span></span>
@@ -584,7 +596,7 @@
     <div class="block reveal">
       <div class="eyebrow">Hablemos</div>
       <h2>Raquel Bello Patricio</h2>
-      <p>AI Content Creator · Video Editor · Motion Graphics · Visual Storytelling</p>
+      <p>AI Content Creator · Video Editor · Motion Graphics / VFX · Visual Storytelling</p>
       <p style="margin-top:0.6rem;"><a href="https://www.linkedin.com/in/raquelbellopatricio" style="color:var(--accent);text-decoration:none;">LinkedIn ↗</a> · <a href="mailto:hola@raquelbellocreative.com" style="color:var(--accent);text-decoration:none;">hola@raquelbellocreative.com</a></p>
     </div>
     <div class="signature reveal">— fragmentos / 2026</div>
@@ -594,7 +606,7 @@
 
 <nav id="sideNav" class="side-nav">
   <a href="#sec-edicion" data-label="Edición"><span></span></a>
-  <a href="#sec-motion" data-label="Motion Graphics"><span></span></a>
+  <a href="#sec-motion" data-label="Motion Graphics / VFX"><span></span></a>
   <a href="#sec-ia" data-label="IA"><span></span></a>
   <a href="#sec-direccion" data-label="Dirección"><span></span></a>
 </nav>
@@ -985,32 +997,47 @@
       ]
     },
     'sec-motion': {
-      eyebrow: '02 — Motion Graphics',
+      eyebrow: '02 — Motion Graphics / VFX',
       title: 'Cada ángulo, una versión distinta',
-      text: 'Reel de motion graphics en construcción — gráficos animados, tipografía en movimiento, identidad de marca.',
-      video: null
+      text: 'Composición y tracking sobre metraje real:',
+      videoItems: [
+        {
+          video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784125906/mascara_azul_cflqyk.mp4',
+          caption: 'Corrección de color trackeada sobre metraje real — comparativa original / resultado.'
+        },
+        {
+          video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784125910/mascara_ver2_gtg421.mp4',
+          caption: 'Composición y tracking de un elemento sobre metraje real en movimiento.'
+        }
+      ]
     },
     'sec-ia': {
       eyebrow: '03 — IA',
       title: 'El vacío también tiene textura',
-      text: 'Dos piezas con IA: la portada animada de "El murciélago Pip y la noche oscura" (ilustración propia + Vidu), y una animación de avatar generada con IA (Dola/Vidu), montada en Premiere.',
-      videos: [
-        'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
-        'https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4'
+      text: 'Dos formas distintas de trabajar con IA en el proceso creativo:',
+      videoItems: [
+        {
+          video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
+          caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).'
+        },
+        {
+          video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1783965539/video_web_rhy1uv.mp4',
+          caption: 'Animación de avatar generada con IA (Dola/Vidu), montada en Premiere.'
+        }
       ],
       link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
     },
     'sec-direccion': {
       eyebrow: '04 — Dirección',
       title: 'Una historia contada de principio a fin',
-      text: 'Cortometraje en stop-motion de plastilina: guion, dirección, construcción de escena y montaje, todo propio.',
+      text: 'Cortometraje en stop-motion de plastilina — guion y dirección propios.',
       video: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784122696/Secuencia_Trump_bananas_1_comprimido_mpdnb6.mp4'
     }
   };
 
   const navLinks = [
     { index: 1, target: 'sec-edicion', label: 'Edición' },
-    { index: 4, target: 'sec-motion', label: 'Motion Graphics' },
+    { index: 4, target: 'sec-motion', label: 'Motion Graphics / VFX' },
     { index: 7, target: 'sec-ia', label: 'IA' },
     { index: 10, target: 'sec-direccion', label: 'Dirección' }
   ];
@@ -1147,7 +1174,21 @@
 
     modalMedia.innerHTML = '';
 
-    if (data.videos && data.videos.length) {
+    if (data.videoItems && data.videoItems.length) {
+      // varios trabajos distintos, cada uno con su propia leyenda
+      const grid = document.createElement('div');
+      grid.className = 'modal-video-grid';
+      data.videoItems.forEach(item => {
+        const figure = document.createElement('figure');
+        figure.className = 'modal-video-figure';
+        figure.appendChild(createClickToPlayVideo(item.video, { height: 220, lightbox: true }));
+        const caption = document.createElement('figcaption');
+        caption.textContent = item.caption;
+        figure.appendChild(caption);
+        grid.appendChild(figure);
+      });
+      modalMedia.appendChild(grid);
+    } else if (data.videos && data.videos.length) {
       // varios clips cortos (p. ej. piezas de redes sociales)
       const grid = document.createElement('div');
       grid.className = 'modal-video-grid';

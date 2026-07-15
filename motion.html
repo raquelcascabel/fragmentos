@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion Graphics / VFX — Raquel Bello</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="pagina-seccion.css">
+<script src="adaptive-video.js"></script>
+<style>
+  .clip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1.6rem;
+    max-width: 900px;
+    margin-bottom: 1.4rem;
+  }
+  .clip-figure { margin: 0; max-width: 320px; }
+  .clip-figure .ctp-video { border: 1px solid rgba(232, 236, 244, 0.14); }
+  .clip-figure figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+  <a class="back-link" href="fragmentos-cristal.html"><span>←</span> Volver al recorrido</a>
+
+  <header>
+    <div class="eyebrow">02 — Motion Graphics / VFX</div>
+    <h1>Cada ángulo, una versión distinta</h1>
+  </header>
+
+  <div class="clip-grid" id="clipGrid"></div>
+
+  <article>
+    <p>Composición y tracking sobre metraje real, integrando elementos que siguen el movimiento de cámara y sujeto.</p>
+  </article>
+
+  <footer>Raquel Bello · Motion Graphics / VFX</footer>
+
+  <script>
+    const ITEMS = [
+      {
+        url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784125906/mascara_azul_cflqyk.mp4',
+        caption: 'Corrección de color trackeada sobre metraje real — comparativa original / resultado.'
+      },
+      {
+        url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784125910/mascara_ver2_gtg421.mp4',
+        caption: 'Composición y tracking de un elemento sobre metraje real en movimiento.'
+      }
+    ];
+    const clipGrid = document.getElementById('clipGrid');
+    ITEMS.forEach(item => {
+      const figure = document.createElement('figure');
+      figure.className = 'clip-figure';
+      figure.appendChild(createClickToPlayVideo(item.url, { height: 320, lightbox: true }));
+      const caption = document.createElement('figcaption');
+      caption.textContent = item.caption;
+      figure.appendChild(caption);
+      clipGrid.appendChild(figure);
+    });
+  </script>
+</body>
+</html>
