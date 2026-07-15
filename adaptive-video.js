@@ -174,7 +174,7 @@
     if (thumbUrl) {
       const img = document.createElement('img');
       img.className = 'ctp-thumb';
-      img.alt = '';
+      img.alt = options.alt || 'Miniatura de vídeo, haz clic para reproducir';
       img.src = thumbUrl;
       img.addEventListener('load', () => applyRatio(img.naturalWidth, img.naturalHeight));
       wrap.appendChild(img);

@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IA — Raquel Bello</title>
+<title>Creación de Contenido con IA — Raquel Bello Patricio</title>
+<meta name="description" content="Proyectos con inteligencia artificial de Raquel Bello Patricio: el cuento interactivo El murciélago Pip y la noche oscura, y animación de avatar generada con IA.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.raquelbellocreative.com/ia.html">
+<meta property="og:title" content="Creación de Contenido con IA — Raquel Bello Patricio">
+<meta property="og:description" content="El cuento interactivo El murciélago Pip y la noche oscura, y animación de avatar generada con IA.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Creación de Contenido con IA — Raquel Bello Patricio">
+<meta name="twitter:description" content="El cuento interactivo El murciélago Pip y la noche oscura, y animación de avatar generada con IA.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="pagina-seccion.css">
 <script src="adaptive-video.js"></script>
@@ -69,7 +77,7 @@
     ITEMS.forEach(item => {
       const figure = document.createElement('figure');
       figure.className = 'clip-figure';
-      figure.appendChild(createClickToPlayVideo(item.url, { height: 320, lightbox: true }));
+      figure.appendChild(createClickToPlayVideo(item.url, { height: 320, lightbox: true, alt: item.caption }));
       const caption = document.createElement('figcaption');
       caption.textContent = item.caption;
       figure.appendChild(caption);

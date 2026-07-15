@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fragmentos en el vacío</title>
+<title>Raquel Bello Patricio — AI Content Creator, Video Editor & Motion Graphics</title>
+<meta name="description" content="Portfolio de Raquel Bello Patricio: edición de vídeo, motion graphics, VFX y creación de contenido con IA. Un recorrido interactivo en 3D por sus proyectos.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.raquelbellocreative.com/fragmentos-cristal.html">
+<meta property="og:title" content="Raquel Bello Patricio — AI Content Creator, Video Editor & Motion Graphics">
+<meta property="og:description" content="Portfolio interactivo en 3D: edición de vídeo, motion graphics, VFX y creación de contenido con IA.">
+<meta property="og:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1783965539/video_web_rhy1uv.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Raquel Bello Patricio — AI Content Creator, Video Editor & Motion Graphics">
+<meta name="twitter:description" content="Portfolio interactivo en 3D: edición de vídeo, motion graphics, VFX y creación de contenido con IA.">
+<meta name="twitter:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1783965539/video_web_rhy1uv.jpg">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1161,7 +1171,7 @@
       data.videoItems.forEach(item => {
         const figure = document.createElement('figure');
         figure.className = 'modal-video-figure';
-        figure.appendChild(createClickToPlayVideo(item.video, { height: 140, lightbox: true }));
+        figure.appendChild(createClickToPlayVideo(item.video, { height: 140, lightbox: true, alt: item.caption }));
         const caption = document.createElement('figcaption');
         caption.textContent = item.caption;
         figure.appendChild(caption);
@@ -1182,14 +1192,14 @@
       const grid = document.createElement('div');
       grid.className = 'modal-video-grid';
       data.videos.forEach(src => {
-        grid.appendChild(createClickToPlayVideo(src, { height: 220, lightbox: true }));
+        grid.appendChild(createClickToPlayVideo(src, { height: 220, lightbox: true, alt: 'Pieza de edición de vídeo, haz clic para reproducir' }));
       });
       modalMedia.appendChild(grid);
     } else if (data.video) {
       // un único vídeo (reel o pieza)
       const wrap = document.createElement('div');
       wrap.className = 'modal-video-single';
-      wrap.appendChild(createClickToPlayVideo(data.video, { lightbox: true }));
+      wrap.appendChild(createClickToPlayVideo(data.video, { lightbox: true, alt: data.title }));
       modalMedia.appendChild(wrap);
     } else {
       // todavía no hay vídeo para esta sección
