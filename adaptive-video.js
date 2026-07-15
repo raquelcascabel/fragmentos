@@ -140,6 +140,10 @@
     wrap.appendChild(btn);
 
     wrap.addEventListener('click', function start() {
+      if (options.lightbox) {
+        openVideoLightbox(originalUrl);
+        return;
+      }
       wrap.removeEventListener('click', start);
       wrap.innerHTML = '';
       wrap.style.cursor = 'default';
@@ -158,4 +162,96 @@
   }
 
   global.createClickToPlayVideo = createClickToPlayVideo;
+
+  // ---------- lightbox (vídeo grande, semicompleto, con fondo oscuro) ----------
+  function injectLightboxStyles() {
+    if (document.getElementById('ctp-lightbox-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'ctp-lightbox-styles';
+    style.textContent = `
+      .ctp-lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(5, 8, 16, 0.88);
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .ctp-lightbox.is-open { opacity: 1; pointer-events: auto; }
+      .ctp-lightbox video {
+        max-width: 90vw;
+        max-height: 85vh;
+        width: auto;
+        height: auto;
+        background: #000;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      }
+      .ctp-lightbox-close {
+        position: absolute;
+        top: 1.4rem;
+        right: 1.6rem;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.4);
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function openVideoLightbox(originalUrl) {
+    injectLightboxStyles();
+    let overlay = document.getElementById('ctp-lightbox-global');
+
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'ctp-lightbox-global';
+      overlay.className = 'ctp-lightbox';
+
+      const closeBtn = document.createElement('div');
+      closeBtn.className = 'ctp-lightbox-close';
+      closeBtn.textContent = '✕';
+      overlay.appendChild(closeBtn);
+
+      function close() {
+        overlay.classList.remove('is-open');
+        const v = overlay.querySelector('video');
+        if (v) v.pause();
+      }
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') close();
+      });
+
+      document.body.appendChild(overlay);
+    }
+
+    const oldVideo = overlay.querySelector('video');
+    if (oldVideo) oldVideo.remove();
+
+    const v = document.createElement('video');
+    v.controls = true;
+    v.playsInline = true;
+    v.autoplay = true;
+    overlay.appendChild(v);
+    attachAdaptiveVideo(v, originalUrl);
+    v.play().catch(function () {});
+
+    overlay.classList.add('is-open');
+  }
+
+  global.openVideoLightbox = openVideoLightbox;
 })(window);

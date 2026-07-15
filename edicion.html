@@ -49,7 +49,7 @@
       'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111902/nzi_universe_5_lqmlfx.mov'
     ];
     const clipGrid = document.getElementById('clipGrid');
-    CLIPS.forEach(url => clipGrid.appendChild(createClickToPlayVideo(url, { height: 320 })));
+    CLIPS.forEach(url => clipGrid.appendChild(createClickToPlayVideo(url, { height: 320, lightbox: true })));
   </script>
 </body>
 </html>
