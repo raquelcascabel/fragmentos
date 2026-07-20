@@ -58,6 +58,21 @@
     text-decoration: none;
   }
   .project-link:hover { opacity: 0.75; }
+  .project-frame {
+    width: 100%;
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 2.2rem 2rem 1.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(232, 236, 244, 0.14);
+    background: rgba(8, 13, 26, 0.32);
+  }
+  .project-frame .clip-grid {
+    margin-bottom: 0;
+  }
+  @media (max-width: 640px) {
+    .project-frame { padding: 1.6rem 1.3rem 1.4rem; }
+  }
 </style>
 </head>
 <body>
@@ -129,6 +144,9 @@
       divider.innerHTML = '<span class="group-label">Proyecto — <strong>' + group.project + '</strong></span>';
       container.appendChild(divider);
 
+      const frame = document.createElement('div');
+      frame.className = 'project-frame';
+
       const block = document.createElement('div');
       block.className = 'group-block clip-grid';
       group.items.forEach(item => {
@@ -149,7 +167,8 @@
         }
         block.appendChild(figure);
       });
-      container.appendChild(block);
+      frame.appendChild(block);
+      container.appendChild(frame);
     });
   </script>
 </body>
