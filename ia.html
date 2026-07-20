@@ -123,10 +123,14 @@
     ];
 
     const container = document.getElementById('projectGroups');
-    PROJECT_GROUPS.forEach(group => {
+    PROJECT_GROUPS.forEach((group, gi) => {
       const divider = document.createElement('div');
       divider.className = 'group-divider';
-      divider.innerHTML = miniCrystalSVG() + '<span class="group-label">Proyecto — <strong>' + group.project + '</strong></span>' + miniCrystalSVG();
+      // El mini-cristal aparece solo en el primer separador de la
+      // página (uso puntual), el resto son solo texto.
+      divider.innerHTML = (gi === 0 ? miniCrystalSVG() : '') +
+        '<span class="group-label">Proyecto — <strong>' + group.project + '</strong></span>' +
+        (gi === 0 ? miniCrystalSVG() : '');
       container.appendChild(divider);
 
       const block = document.createElement('div');

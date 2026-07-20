@@ -35,7 +35,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 2rem;
     max-width: 900px;
     margin: 0 auto;
   }
@@ -107,10 +107,14 @@
     ];
 
     const container = document.getElementById('clientGroups');
-    CLIENT_GROUPS.forEach(group => {
+    CLIENT_GROUPS.forEach((group, gi) => {
       const divider = document.createElement('div');
       divider.className = 'group-divider';
-      divider.innerHTML = miniCrystalSVG() + '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>' + miniCrystalSVG();
+      // El mini-cristal aparece solo en el primer separador de la
+      // página (uso puntual), el resto son solo texto.
+      divider.innerHTML = (gi === 0 ? miniCrystalSVG() : '') +
+        '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>' +
+        (gi === 0 ? miniCrystalSVG() : '');
       container.appendChild(divider);
 
       const block = document.createElement('div');

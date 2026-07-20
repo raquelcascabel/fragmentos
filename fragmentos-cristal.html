@@ -42,6 +42,16 @@
 }
 </script>
 <style>
+  /* Desactiva el cross-fade automático que algunos navegadores (p. ej.
+     Chrome con "View Transitions" activado) aplican por defecto entre
+     dos cargas de página completas. Sin esto, el navegador podía
+     fundir esta página de salida con la de entrada, dando la
+     sensación de una animación de aparición no deseada en el fondo
+     de destino. */
+  @view-transition {
+    navigation: none;
+  }
+
   :root {
     --bg: #080D1A;
     --bg-soft: #0D1526;
@@ -1569,6 +1579,12 @@
       window.setTimeout(() => { if (onDone) onDone(); }, 780);
     }
 
+    function resetOverlay() {
+      overlay.classList.remove('is-active');
+      shards.forEach(s => s.remove());
+      shards = [];
+    }
+
     document.querySelectorAll('a.block-link').forEach(link => {
       link.addEventListener('click', function (e) {
         const href = link.getAttribute('href');
@@ -1590,6 +1606,16 @@
           window.location.href = href;
         });
       });
+    });
+
+    // Si el usuario llega a esta página mediante el botón Atrás/Adelante
+    // del navegador, Chrome puede restaurarla desde el bfcache tal cual
+    // quedó justo antes de navegar — es decir, con el overlay de cristal
+    // roto ya expandido y congelado en pantalla. Lo detectamos y lo
+    // reseteamos a su estado normal (oculto, sin fragmentos) para que
+    // la persona vea el contenido de la página, no la animación parada.
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) resetOverlay();
     });
   })();
 </script>
