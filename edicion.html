@@ -107,14 +107,10 @@
     ];
 
     const container = document.getElementById('clientGroups');
-    CLIENT_GROUPS.forEach((group, gi) => {
+    CLIENT_GROUPS.forEach(group => {
       const divider = document.createElement('div');
       divider.className = 'group-divider';
-      // El mini-cristal aparece solo en el primer separador de la
-      // página (uso puntual), el resto son solo texto.
-      divider.innerHTML = (gi === 0 ? miniCrystalSVG() : '') +
-        '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>' +
-        (gi === 0 ? miniCrystalSVG() : '');
+      divider.innerHTML = '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>';
       container.appendChild(divider);
 
       const block = document.createElement('div');

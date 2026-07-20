@@ -23,7 +23,7 @@
     wrap.style.setProperty('--sw', w + 'px');
     wrap.style.setProperty('--sh', h + 'px');
     wrap.style.setProperty('--base-rot', rot + 'deg');
-    wrap.style.setProperty('--target-opacity', rand(0.22, 0.4).toFixed(2));
+    wrap.style.setProperty('--target-opacity', rand(0.18, 0.32).toFixed(2));
     return wrap;
   }
 
