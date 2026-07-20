@@ -43,25 +43,29 @@
     border: 1px solid rgba(232, 236, 244, 0.18);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   }
-  .agency-panel {
+  .agency-frame {
     width: 100%;
-    max-width: 900px;
-    margin: 1.8rem auto 0;
-    padding: 1.4rem 1.8rem;
-    border-radius: 16px;
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 2.2rem 2rem 1.8rem;
+    border-radius: 20px;
     border: 1px solid rgba(232, 236, 244, 0.14);
     background: rgba(8, 13, 26, 0.32);
   }
-  .agency-panel p {
+  .agency-frame .group-divider--client:first-of-type {
+    margin-top: 0;
+  }
+  .agency-frame .agency-desc {
+    max-width: 720px;
+    margin: 2.2rem auto 0;
     font-size: 0.95rem;
     line-height: 1.75;
     color: #B9C2D4;
-    margin: 0;
     text-align: center;
   }
   @media (max-width: 640px) {
-    .agency-panel { padding: 1.1rem 1.3rem; margin-top: 1.3rem; }
-    .agency-panel p { font-size: 0.88rem; }
+    .agency-frame { padding: 1.6rem 1.3rem 1.4rem; }
+    .agency-frame .agency-desc { font-size: 0.88rem; margin-top: 1.6rem; }
   }
 </style>
 </head>
@@ -154,12 +158,15 @@
       agencyDivider.innerHTML = miniCrystalSVG() + '<span class="group-label">Agencia — <strong>' + agencyGroup.agency + '</strong></span>';
       container.appendChild(agencyDivider);
 
+      const frame = document.createElement('div');
+      frame.className = 'agency-frame';
+
       agencyGroup.clients.forEach(group => {
         if (group.client) {
           const divider = document.createElement('div');
           divider.className = 'group-divider group-divider--client';
           divider.innerHTML = '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>';
-          container.appendChild(divider);
+          frame.appendChild(divider);
         }
 
         const block = document.createElement('div');
@@ -169,15 +176,17 @@
           clipCounter++;
           block.appendChild(createClickToPlayVideo(url, { height: 320, lightbox: true, alt: 'Clip de edición para ' + labelBase + ', vídeo ' + clipCounter + ', haz clic para reproducir' }));
         });
-        container.appendChild(block);
+        frame.appendChild(block);
       });
 
       if (agencyGroup.description) {
-        const panel = document.createElement('div');
-        panel.className = 'agency-panel';
-        panel.innerHTML = '<p>' + agencyGroup.description + '</p>';
-        container.appendChild(panel);
+        const desc = document.createElement('p');
+        desc.className = 'agency-desc';
+        desc.textContent = agencyGroup.description;
+        frame.appendChild(desc);
       }
+
+      container.appendChild(frame);
     });
   </script>
 </body>
