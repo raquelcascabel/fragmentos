@@ -1,5 +1,6 @@
-/* Estilos compartidos para las páginas de sección: superficie.html,
-   profundidad.html, deriva.html. Misma paleta que fragmentos-cristal.html. */
+/* Estilos compartidos para las páginas de sección: edicion.html,
+   motion.html, ia.html, direccion.html. Misma paleta que
+   fragmentos-cristal.html. */
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&family=Quicksand:wght@400;500;600&display=swap');
 
@@ -32,8 +33,9 @@ body {
    exactamente la misma disposición final en la que quedaron los
    fragmentos al terminar esa animación (ver crystal-bg.js). Si se
    entra directo a la página, usa una composición aleatoria de
-   respaldo. En ambos casos, con la misma estética que los cristales
-   de la página principal y un movimiento de flotación muy lento. */
+   respaldo. En ambos casos el fondo es completamente estático (sin
+   movimiento ni fade-in), con brillo discreto para no competir con
+   el contenido.*/
 #crystalBg {
   position: fixed;
   inset: 0;
@@ -47,34 +49,13 @@ body {
   width: var(--sw, 200px);
   height: var(--sh, 200px);
   margin: calc(var(--sh, 200px) / -2) 0 0 calc(var(--sw, 200px) / -2);
-  opacity: 0;
+  opacity: var(--target-opacity, 0.35);
   background:
-    linear-gradient(135deg, rgba(232, 236, 244, 0.22), rgba(62, 207, 178, 0.14) 45%, rgba(8, 13, 26, 0.96) 85%);
+    linear-gradient(135deg, rgba(232, 236, 244, 0.12), rgba(62, 207, 178, 0.07) 45%, rgba(8, 13, 26, 0.96) 85%);
   box-shadow:
-    inset 0 0 0 1.5px rgba(232, 236, 244, 0.55),
-    0 0 24px rgba(62, 207, 178, 0.35);
-  animation: bg-shard-in 1.4s ease-out forwards, bg-shard-float var(--float-dur, 14s) ease-in-out infinite;
-  animation-delay: var(--in-delay, 0s), var(--in-delay, 0s);
-}
-
-@keyframes bg-shard-in {
-  from { opacity: 0; }
-  to   { opacity: var(--target-opacity, 0.5); }
-}
-
-@keyframes bg-shard-float {
-  0%, 100% {
-    transform: translate(0, 0) rotate(var(--base-rot, 0deg));
-  }
-  50% {
-    transform: translate(var(--float-x, 10px), var(--float-y, -14px)) rotate(calc(var(--base-rot, 0deg) + var(--float-rot, 4deg)));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bg-shard {
-    animation: bg-shard-in 1.4s ease-out forwards;
-  }
+    inset 0 0 0 1px rgba(232, 236, 244, 0.3),
+    0 0 12px rgba(62, 207, 178, 0.15);
+  transform: rotate(var(--base-rot, 0deg));
 }
 
 .back-link {
@@ -130,58 +111,6 @@ h1 {
   letter-spacing: -0.01em;
 }
 
-.video-frame {
-  max-width: 900px;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 1px solid rgba(232, 236, 244, 0.14);
-  border-radius: 2px;
-  background: linear-gradient(160deg, #0D1526, #080D1A);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0 auto 3rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.video-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(62, 207, 178, 0.08), transparent 70%);
-}
-
-.play-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 1px solid rgba(232, 236, 244, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text);
-  font-size: 1.1rem;
-  z-index: 1;
-}
-
-.video-frame p {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  z-index: 1;
-}
-
-/* Cuando haya vídeo real, sustituir .video-frame por, p. ej.:
-   <video controls poster="..." style="width:100%;aspect-ratio:16/9;">
-     <source src="https://res.cloudinary.com/TU_CLOUD/video/upload/xxxx.mp4" type="video/mp4">
-   </video>
-*/
-
 article {
   max-width: 640px;
   width: 100%;
@@ -234,7 +163,7 @@ footer {
   width: 13px;
   height: 20px;
   overflow: visible;
-  filter: drop-shadow(0 0 4px rgba(62, 207, 178, 0.6));
+  filter: drop-shadow(0 0 4px rgba(139, 127, 245, 0.6));
 }
 
 .group-divider .mini-crystal .facet-edge {
@@ -251,17 +180,18 @@ footer {
   text-transform: none;
   color: var(--text-dim);
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .group-divider .group-label strong {
-  color: var(--accent);
+  color: var(--accent-2);
   font-weight: 600;
 }
 
 @media (max-width: 640px) {
-  body { padding: clamp(1.2rem, 6vh, 2.2rem) clamp(1rem, 7vw, 1.8rem) clamp(1.5rem, 8vh, 2.6rem); }
+  body { padding: clamp(1.2rem, 6vh, 2.2rem) clamp(1rem, 7vw, 1.8rem) clamp(1.5rem, 8vh, 2.6rem); overflow-x: hidden; }
   .group-divider { gap: 1rem; margin-bottom: 2.8rem; padding: 1.6rem 0; }
-  .group-divider .group-label { font-size: 0.9rem; letter-spacing: 0.02em; }
+  .group-divider .group-label { font-size: 0.9rem; letter-spacing: 0.02em; white-space: normal; text-align: center; }
   .group-divider .mini-crystal { width: 10px; height: 15px; }
   .group-block { margin-bottom: 4.6rem; }
 }

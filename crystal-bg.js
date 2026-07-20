@@ -6,6 +6,7 @@
 // de navegar) — no una composición aleatoria nueva. Si se entra
 // directamente a la página (sin pasar por la transición), se genera
 // una composición aleatoria de respaldo con el mismo estilo visual.
+// El fondo es completamente estático, sin ningún movimiento.
 (function () {
   const container = document.getElementById('crystalBg');
   if (!container) return;
@@ -14,7 +15,7 @@
     return min + Math.random() * (max - min);
   }
 
-  function makeShardEl(xPct, yPct, w, h, rot, delay) {
+  function makeShardEl(xPct, yPct, w, h, rot) {
     const wrap = document.createElement('div');
     wrap.className = 'bg-shard';
     wrap.style.left = xPct + '%';
@@ -22,28 +23,22 @@
     wrap.style.setProperty('--sw', w + 'px');
     wrap.style.setProperty('--sh', h + 'px');
     wrap.style.setProperty('--base-rot', rot + 'deg');
-    wrap.style.setProperty('--float-x', rand(-18, 18) + 'px');
-    wrap.style.setProperty('--float-y', rand(-22, 22) + 'px');
-    wrap.style.setProperty('--float-rot', rand(-6, 6) + 'deg');
-    wrap.style.setProperty('--float-dur', rand(11, 19).toFixed(1) + 's');
-    wrap.style.setProperty('--in-delay', delay + 's');
-    wrap.style.setProperty('--target-opacity', rand(0.55, 0.9).toFixed(2));
-    wrap.style.transform = 'rotate(' + rot + 'deg)';
+    wrap.style.setProperty('--target-opacity', rand(0.22, 0.4).toFixed(2));
     return wrap;
   }
 
   function renderFromLayout(layout) {
-    layout.forEach((s, i) => {
-      container.appendChild(makeShardEl(s.xPct, s.yPct, s.w, s.h, s.rot, (i * 0.03).toFixed(2)));
-    });
+    layout.forEach(s => container.appendChild(makeShardEl(s.xPct, s.yPct, s.w, s.h, s.rot)));
   }
 
   function renderRandomFallback() {
-    const SHARD_COUNT = window.innerWidth < 640 ? 5 : 8;
-    for (let i = 0; i < SHARD_COUNT; i++) {
-      const w = rand(140, 320);
-      const h = rand(140, 320);
-      container.appendChild(makeShardEl(rand(-6, 92), rand(-6, 88), w, h, rand(-30, 30), rand(0, 1.2).toFixed(2)));
+    const isMobile = window.innerWidth < 640;
+    const shardCount = isMobile ? 5 : 8;
+    const maxW = isMobile ? 200 : 320;
+    for (let i = 0; i < shardCount; i++) {
+      const w = rand(100, maxW);
+      const h = rand(100, maxW);
+      container.appendChild(makeShardEl(rand(-6, 92), rand(-6, 88), w, h, rand(-30, 30)));
     }
   }
 
