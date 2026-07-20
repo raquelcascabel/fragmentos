@@ -43,6 +43,26 @@
     border: 1px solid rgba(232, 236, 244, 0.18);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   }
+  .agency-panel {
+    width: 100%;
+    max-width: 900px;
+    margin: 1.8rem auto 0;
+    padding: 1.4rem 1.8rem;
+    border-radius: 16px;
+    border: 1px solid rgba(232, 236, 244, 0.14);
+    background: rgba(8, 13, 26, 0.32);
+  }
+  .agency-panel p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #B9C2D4;
+    margin: 0;
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    .agency-panel { padding: 1.1rem 1.3rem; margin-top: 1.3rem; }
+    .agency-panel p { font-size: 0.88rem; }
+  }
 </style>
 </head>
 <body>
@@ -92,6 +112,7 @@
     const AGENCY_GROUPS = [
       {
         agency: 'Acutebrand',
+        description: 'Contenido para redes sociales en varios formatos (vertical, cuadrado y horizontal), pensado para una publicación ágil en distintas plataformas.',
         clients: [
           {
             client: null,
@@ -105,6 +126,7 @@
       },
       {
         agency: 'Amor de Madre',
+        description: 'Piezas de edición para clientes de la agencia, como NZI y EWS: grabación, montaje y rótulos propios, con foco en captar la atención desde el primer segundo.',
         clients: [
           {
             client: 'NZI',
@@ -149,6 +171,13 @@
         });
         container.appendChild(block);
       });
+
+      if (agencyGroup.description) {
+        const panel = document.createElement('div');
+        panel.className = 'agency-panel';
+        panel.innerHTML = '<p>' + agencyGroup.description + '</p>';
+        container.appendChild(panel);
+      }
     });
   </script>
 </body>
