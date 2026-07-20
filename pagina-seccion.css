@@ -73,8 +73,8 @@ header {
 h1 {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 300;
-  font-size: clamp(2rem, 4.5vw, 3rem);
-  line-height: 1.15;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  line-height: 1.1;
   letter-spacing: -0.01em;
 }
 
@@ -159,28 +159,48 @@ footer {
 .group-block {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto 2.6rem;
+  margin: 0 auto 4.5rem;
+}
+
+.group-block:last-child {
+  margin-bottom: 0;
 }
 
 .group-divider {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.6rem;
   width: 100%;
   max-width: 900px;
-  margin: 0 auto 1.4rem;
+  margin: 0 auto 2.8rem;
+  padding-top: 1rem;
 }
 
 .group-divider .line {
   flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(232, 236, 244, 0.18), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(62, 207, 178, 0.55), transparent);
+}
+
+.group-divider .mini-crystal {
+  flex: none;
+  width: 22px;
+  height: 34px;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(62, 207, 178, 0.65));
+}
+
+.group-divider .mini-crystal .facet-edge {
+  fill: none;
+  stroke: rgba(232, 236, 244, 0.55);
+  stroke-width: 0.6;
 }
 
 .group-divider .group-label {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.28em;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-dim);
   white-space: nowrap;
@@ -193,5 +213,8 @@ footer {
 
 @media (max-width: 640px) {
   body { padding: clamp(1.2rem, 6vh, 2.2rem) clamp(1rem, 7vw, 1.8rem) clamp(1.5rem, 8vh, 2.6rem); }
-  .group-divider .group-label { font-size: 0.6rem; letter-spacing: 0.2em; }
+  .group-divider { gap: 1rem; margin-bottom: 2.2rem; }
+  .group-divider .group-label { font-size: 0.82rem; letter-spacing: 0.1em; }
+  .group-divider .mini-crystal { width: 16px; height: 25px; }
+  .group-block { margin-bottom: 3.4rem; }
 }

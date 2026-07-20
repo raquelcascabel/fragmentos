@@ -76,6 +76,27 @@
   <footer>Raquel Bello · IA</footer>
 
   <script>
+    // Mini-cristal facetado: misma silueta bipiramidal irregular (punta
+    // corta arriba, punta larga abajo, corona de facetas) que los
+    // cristales 3D de la página principal, en miniatura, para crear
+    // continuidad visual entre el recorrido y las páginas de sección.
+    let __mcCount = 0;
+    function miniCrystalSVG() {
+      const gid = 'mcg' + (__mcCount++);
+      return '<svg class="mini-crystal" viewBox="0 0 22 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+        '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="#8B7FF5"/>' +
+        '<stop offset="45%" stop-color="#E8ECF4"/>' +
+        '<stop offset="100%" stop-color="#3ECFB2"/>' +
+        '</linearGradient></defs>' +
+        '<polygon points="11,2 16,13 11,15 6,13" fill="url(#' + gid + ')" opacity="0.92"/>' +
+        '<polygon points="6,13 11,15 8,32" fill="url(#' + gid + ')" opacity="0.8"/>' +
+        '<polygon points="11,15 16,13 14,31 8,32" fill="url(#' + gid + ')" opacity="0.65"/>' +
+        '<polygon points="14,31 16,13 19,15 11,15" fill="url(#' + gid + ')" opacity="0.5"/>' +
+        '<path class="facet-edge" d="M11,2 L6,13 M11,2 L16,13 M6,13 L11,15 M16,13 L11,15 M6,13 L8,32 M11,15 L8,32 M11,15 L14,31 M16,13 L14,31"/>' +
+        '</svg>';
+    }
+
     const PROJECT_GROUPS = [
       {
         project: 'El murciélago Pip',
@@ -102,7 +123,7 @@
     PROJECT_GROUPS.forEach(group => {
       const divider = document.createElement('div');
       divider.className = 'group-divider';
-      divider.innerHTML = '<span class="line"></span><span class="group-label">Proyecto — <strong>' + group.project + '</strong></span><span class="line"></span>';
+      divider.innerHTML = '<span class="line"></span>' + miniCrystalSVG() + '<span class="group-label">Proyecto — <strong>' + group.project + '</strong></span>' + miniCrystalSVG() + '<span class="line"></span>';
       container.appendChild(divider);
 
       const block = document.createElement('div');
