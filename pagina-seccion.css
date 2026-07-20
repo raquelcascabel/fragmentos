@@ -23,6 +23,48 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+}
+
+/* ---------- fondo de fragmentos de cristal ---------- */
+/* Contenedor fijo detrás de todo el contenido. Cada página genera su
+   propia composición aleatoria de fragmentos (semilla distinta por
+   página), con la misma estética que los cristales de la página
+   principal, y un movimiento de flotación muy lento y sutil. */
+#crystalBg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-shard {
+  position: absolute;
+  opacity: 0;
+  filter: drop-shadow(0 0 18px rgba(62, 207, 178, 0.18));
+  animation: bg-shard-in 1.4s ease-out forwards, bg-shard-float var(--float-dur, 14s) ease-in-out infinite;
+  animation-delay: var(--in-delay, 0s), var(--in-delay, 0s);
+}
+
+@keyframes bg-shard-in {
+  from { opacity: 0; }
+  to   { opacity: var(--target-opacity, 0.5); }
+}
+
+@keyframes bg-shard-float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--base-rot, 0deg));
+  }
+  50% {
+    transform: translate(var(--float-x, 10px), var(--float-y, -14px)) rotate(calc(var(--base-rot, 0deg) + var(--float-rot, 4deg)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-shard {
+    animation: bg-shard-in 1.4s ease-out forwards;
+  }
 }
 
 .back-link {
