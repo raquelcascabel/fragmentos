@@ -33,11 +33,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    justify-content: center;
     gap: 1.6rem;
     max-width: 900px;
     margin-bottom: 1.4rem;
   }
-  .clip-figure { margin: 0; }
+  .clip-figure { margin: 0; text-align: center; }
   .clip-figure .ctp-video { border: 1px solid rgba(232, 236, 244, 0.14); }
   .clip-figure figcaption {
     margin-top: 0.6rem;
@@ -66,7 +67,7 @@
     <h1>El vacío también tiene textura</h1>
   </header>
 
-  <div class="clip-grid" id="clipGrid"></div>
+  <div id="projectGroups"></div>
 
   <article>
     <p>Dos formas distintas de trabajar con IA en el proceso creativo.</p>
@@ -75,35 +76,56 @@
   <footer>Raquel Bello · IA</footer>
 
   <script>
-    const ITEMS = [
+    const PROJECT_GROUPS = [
       {
-        url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
-        caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).',
-        link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
+        project: 'El murciélago Pip',
+        items: [
+          {
+            url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/q_auto:best/vc_auto/v1780663838/nueva_portada_cuento_sin_logo_qopxjl.mp4',
+            caption: '"El murciélago Pip y la noche oscura" — cuento interactivo con ilustración propia animada mediante IA (Vidu).',
+            link: { url: 'https://raquelcascabel.github.io/cuentoelmurcielagopipylanocheoscura/', label: 'Ver el cuento completo →' }
+          }
+        ]
       },
       {
-        url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784130503/avtar_fy2iti.mp4',
-        caption: 'Animación de avatar generada con IA (Dola/Vidu), montada en Premiere.'
+        project: 'Avatar animado',
+        items: [
+          {
+            url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784130503/avtar_fy2iti.mp4',
+            caption: 'Animación de avatar generada con IA (Dola/Vidu), montada en Premiere.'
+          }
+        ]
       }
     ];
-    const clipGrid = document.getElementById('clipGrid');
-    ITEMS.forEach(item => {
-      const figure = document.createElement('figure');
-      figure.className = 'clip-figure';
-      figure.appendChild(createClickToPlayVideo(item.url, { height: 320, lightbox: true, alt: item.caption }));
-      const caption = document.createElement('figcaption');
-      caption.textContent = item.caption;
-      figure.appendChild(caption);
-      if (item.link) {
-        const link = document.createElement('a');
-        link.className = 'project-link';
-        link.href = item.link.url;
-        link.target = '_blank';
-        link.rel = 'noopener';
-        link.textContent = item.link.label;
-        figure.appendChild(link);
-      }
-      clipGrid.appendChild(figure);
+
+    const container = document.getElementById('projectGroups');
+    PROJECT_GROUPS.forEach(group => {
+      const divider = document.createElement('div');
+      divider.className = 'group-divider';
+      divider.innerHTML = '<span class="line"></span><span class="group-label">Proyecto — <strong>' + group.project + '</strong></span><span class="line"></span>';
+      container.appendChild(divider);
+
+      const block = document.createElement('div');
+      block.className = 'group-block clip-grid';
+      group.items.forEach(item => {
+        const figure = document.createElement('figure');
+        figure.className = 'clip-figure';
+        figure.appendChild(createClickToPlayVideo(item.url, { height: 320, lightbox: true, alt: item.caption }));
+        const caption = document.createElement('figcaption');
+        caption.textContent = item.caption;
+        figure.appendChild(caption);
+        if (item.link) {
+          const link = document.createElement('a');
+          link.className = 'project-link';
+          link.href = item.link.url;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = item.link.label;
+          figure.appendChild(link);
+        }
+        block.appendChild(figure);
+      });
+      container.appendChild(block);
     });
   </script>
 </body>

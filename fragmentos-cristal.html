@@ -378,6 +378,64 @@
     .block { max-width: 100%; }
   }
 
+  /* ---------- transición "salir del cristal" ---------- */
+  .shatter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .shatter-overlay.is-active {
+    pointer-events: auto;
+  }
+
+  .shatter-shard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(62, 207, 178, 0.16), rgba(8, 13, 26, 0.98) 60%);
+    border: 1px solid rgba(232, 236, 244, 0.12);
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0.4) rotate(var(--rot, 0deg));
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .shatter-overlay.is-active .shatter-shard {
+    transition: transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.5s ease;
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.05) rotate(var(--rot, 0deg));
+    opacity: 1;
+  }
+
+  .shatter-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--ox, 50%) var(--oy, 50%), rgba(232, 236, 244, 0.9), rgba(62, 207, 178, 0.25) 35%, transparent 70%);
+    opacity: 0;
+  }
+
+  .shatter-overlay.is-active .shatter-flash {
+    animation: shatter-flash-pulse 0.62s ease-out forwards;
+  }
+
+  @keyframes shatter-flash-pulse {
+    0%   { opacity: 0; }
+    12%  { opacity: 0.9; }
+    100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shatter-overlay.is-active .shatter-shard,
+    .shatter-overlay.is-active .shatter-flash {
+      transition: opacity 0.25s ease;
+      animation: none;
+      transform: none;
+    }
+  }
+
   /* ---------- habitáculo (modal de cristal) ---------- */
   .crystal-modal {
     position: fixed;
@@ -643,6 +701,10 @@
     <div class="signature reveal">— fragmentos / 2026</div>
   </footer>
 
+</div>
+
+<div id="shatterOverlay" class="shatter-overlay" aria-hidden="true">
+  <div class="shatter-flash"></div>
 </div>
 
 <nav id="sideNav" class="side-nav" aria-label="Navegación rápida por secciones">
@@ -1398,6 +1460,88 @@
   onScroll();
   animate();
 })();
+</script>
+
+<script>
+  // ---------- transición "la página sale del cristal" ----------
+  // Al hacer clic en un bloque de texto (.block-link), en vez de navegar
+  // directamente, generamos fragmentos triangulares tipo cristal roto que
+  // estallan desde el punto de clic, con un destello, y navegamos a la
+  // página real cuando la animación está a punto de terminar.
+  (function () {
+    const overlay = document.getElementById('shatterOverlay');
+    if (!overlay) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SHARD_COUNT = 9;
+    let shards = [];
+
+    function buildShards() {
+      shards.forEach(s => s.remove());
+      shards = [];
+      for (let i = 0; i < SHARD_COUNT; i++) {
+        const shard = document.createElement('div');
+        shard.className = 'shatter-shard';
+        // Cada fragmento es un polígono irregular vía clip-path, simulando
+        // esquirlas de cristal roto de tamaños y ángulos distintos.
+        const cx = 40 + Math.random() * 20;
+        const cy = 40 + Math.random() * 20;
+        const pts = [];
+        const spikes = 5 + Math.floor(Math.random() * 3);
+        for (let p = 0; p < spikes; p++) {
+          const angle = (p / spikes) * Math.PI * 2 + Math.random() * 0.5;
+          const r = 18 + Math.random() * 30;
+          pts.push(`${cx + Math.cos(angle) * r}% ${cy + Math.sin(angle) * r}%`);
+        }
+        shard.style.clipPath = `polygon(${pts.join(', ')})`;
+        overlay.appendChild(shard);
+        shards.push(shard);
+      }
+    }
+
+    function triggerShatter(originX, originY) {
+      overlay.style.setProperty('--ox', originX + '%');
+      overlay.style.setProperty('--oy', originY + '%');
+
+      buildShards();
+      shards.forEach((shard, i) => {
+        const angle = (i / shards.length) * Math.PI * 2 + Math.random() * 0.6;
+        const dist = 60 + Math.random() * 90;
+        const tx = Math.cos(angle) * dist + 'vw';
+        const ty = Math.sin(angle) * dist + 'vh';
+        const rot = (Math.random() - 0.5) * 220 + 'deg';
+        shard.style.setProperty('--tx', tx);
+        shard.style.setProperty('--ty', ty);
+        shard.style.setProperty('--rot', rot);
+      });
+
+      overlay.classList.add('is-active');
+    }
+
+    document.querySelectorAll('a.block-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const href = link.getAttribute('href');
+        if (!href || link.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey) return;
+
+        e.preventDefault();
+
+        if (reduceMotion) {
+          window.location.href = href;
+          return;
+        }
+
+        const rect = link.getBoundingClientRect();
+        const originX = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
+        const originY = ((rect.top + rect.height / 2) / window.innerHeight) * 100;
+
+        triggerShatter(originX, originY);
+
+        window.setTimeout(() => {
+          window.location.href = href;
+        }, 560);
+      });
+    });
+  })();
 </script>
 </body>
 </html>
