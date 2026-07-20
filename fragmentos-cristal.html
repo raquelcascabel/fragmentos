@@ -107,26 +107,9 @@
     padding: 1.5rem 1.7rem;
     margin: -1.5rem -1.7rem;
     border-radius: 20px;
-    backdrop-filter: blur(11px);
-    -webkit-backdrop-filter: blur(11px);
-  }
-
-  /* El tinte de fondo vive en un pseudo-elemento aparte para poder
-     desvanecerlo en un margen de ~1cm (38px) alrededor del borde sin
-     afectar al backdrop-filter del bloque (que sí cubre todo el área,
-     manteniendo la legibilidad del texto hasta el borde). */
-  .block::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgba(8, 13, 26, 0.4), rgba(8, 13, 26, 0.3));
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 38px, #000 calc(100% - 38px), transparent),
-      linear-gradient(to bottom, transparent, #000 38px, #000 calc(100% - 38px), transparent);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to right, transparent, #000 38px, #000 calc(100% - 38px), transparent),
-      linear-gradient(to bottom, transparent, #000 38px, #000 calc(100% - 38px), transparent);
-    mask-composite: intersect;
+    background: rgba(8, 13, 26, 0.42);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .block.is-visible {

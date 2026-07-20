@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edición de Vídeo — Raquel Bello Patricio</title>
-<meta name="description" content="Piezas de edición de vídeo para clientes como EWS y NZI: grabación, montaje y rótulos propios, por Raquel Bello Patricio.">
+<meta name="description" content="Piezas de edición de vídeo para agencias como Acutebrand y Amor de Madre: grabación, montaje y rótulos propios, por Raquel Bello Patricio.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.raquelbellocreative.com/edicion.html">
 <meta property="og:title" content="Edición de Vídeo — Raquel Bello Patricio">
-<meta property="og:description" content="Piezas de edición de vídeo para clientes como EWS y NZI: grabación, montaje y rótulos propios.">
+<meta property="og:description" content="Piezas de edición de vídeo para agencias como Acutebrand y Amor de Madre: grabación, montaje y rótulos propios.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Edición de Vídeo — Raquel Bello Patricio">
-<meta name="twitter:description" content="Piezas de edición de vídeo para clientes como EWS y NZI: grabación, montaje y rótulos propios.">
+<meta name="twitter:description" content="Piezas de edición de vídeo para agencias como Acutebrand y Amor de Madre: grabación, montaje y rótulos propios.">
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="Raquel Bello Patricio — Portfolio">
 <link rel="canonical" href="https://www.raquelbellocreative.com/edicion.html">
@@ -23,7 +23,7 @@
   "name": "Edición de Vídeo",
   "author": { "@type": "Person", "name": "Raquel Bello Patricio" },
   "url": "https://www.raquelbellocreative.com/edicion.html",
-  "description": "Piezas de edición de vídeo para clientes como EWS y NZI: grabación, montaje y rótulos propios."
+  "description": "Piezas de edición de vídeo para agencias como Acutebrand y Amor de Madre: grabación, montaje y rótulos propios."
 }
 </script>
 <link rel="stylesheet" href="pagina-seccion.css">
@@ -62,7 +62,7 @@
   <div id="clientGroups"></div>
 
   <article>
-    <p>Piezas creadas en la agencia Amor de Madre para clientes como EWS y NZI: grabación, montaje y rótulos propios, pensados para captar la atención en redes desde el primer segundo.</p>
+    <p>Piezas de edición para las agencias Acutebrand y Amor de Madre (clientes EWS y NZI): grabación, montaje y rótulos propios, pensados para captar la atención en redes desde el primer segundo.</p>
   </article>
 
   <footer>Raquel Bello · Edición</footer>
@@ -89,34 +89,66 @@
         '</svg>';
     }
 
-    const CLIENT_GROUPS = [
+    const AGENCY_GROUPS = [
       {
-        client: 'EWS',
-        clips: [
-          'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111529/EWS_ver01_dic3_m9vcco.mov',
-          'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111446/EWS_ver6_dic1_onsfqh.mov',
-          'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111434/EWS_ver2_dic2_mdtfhr.mov'
+        agency: 'Acutebrand',
+        clients: [
+          {
+            client: null,
+            clips: [
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784564755/EDIT_Master_9x16._vyefqp.mp4',
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784564753/EDIT_Master_1X1._xfaksx.mp4',
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784566675/EDIT_Master_16x9_comprimido_tfugh9.mp4'
+            ]
+          }
         ]
       },
       {
-        client: 'NZI',
-        clips: [
-          'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111902/nzi_universe_5_lqmlfx.mov'
+        agency: 'Amor de Madre',
+        clients: [
+          {
+            client: 'NZI',
+            clips: [
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111902/nzi_universe_5_lqmlfx.mov'
+            ]
+          },
+          {
+            client: 'EWS',
+            clips: [
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111529/EWS_ver01_dic3_m9vcco.mov',
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111446/EWS_ver6_dic1_onsfqh.mov',
+              'https://res.cloudinary.com/dfaijs7v3/video/upload/v1784111434/EWS_ver2_dic2_mdtfhr.mov'
+            ]
+          }
         ]
       }
     ];
 
     const container = document.getElementById('clientGroups');
-    CLIENT_GROUPS.forEach(group => {
-      const divider = document.createElement('div');
-      divider.className = 'group-divider';
-      divider.innerHTML = '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>';
-      container.appendChild(divider);
+    let clipCounter = 0;
+    AGENCY_GROUPS.forEach(agencyGroup => {
+      const agencyDivider = document.createElement('div');
+      agencyDivider.className = 'group-divider';
+      agencyDivider.innerHTML = miniCrystalSVG() + '<span class="group-label">Agencia — <strong>' + agencyGroup.agency + '</strong></span>';
+      container.appendChild(agencyDivider);
 
-      const block = document.createElement('div');
-      block.className = 'group-block clip-grid';
-      group.clips.forEach((url, i) => block.appendChild(createClickToPlayVideo(url, { height: 320, lightbox: true, alt: 'Clip de edición para ' + group.client + ' ' + (i + 1) + ', haz clic para reproducir' })));
-      container.appendChild(block);
+      agencyGroup.clients.forEach(group => {
+        if (group.client) {
+          const divider = document.createElement('div');
+          divider.className = 'group-divider group-divider--client';
+          divider.innerHTML = '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>';
+          container.appendChild(divider);
+        }
+
+        const block = document.createElement('div');
+        block.className = 'group-block clip-grid';
+        const labelBase = group.client || agencyGroup.agency;
+        group.clips.forEach((url) => {
+          clipCounter++;
+          block.appendChild(createClickToPlayVideo(url, { height: 320, lightbox: true, alt: 'Clip de edición para ' + labelBase + ', vídeo ' + clipCounter + ', haz clic para reproducir' }));
+        });
+        container.appendChild(block);
+      });
     });
   </script>
 </body>
