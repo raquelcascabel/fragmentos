@@ -1502,38 +1502,58 @@
       shards = [];
       const vw = window.innerWidth;
       const vh = window.innerHeight;
+      const layout = [];
 
       for (let i = 0; i < SHARD_COUNT; i++) {
         const shard = document.createElement('div');
         shard.className = 'shatter-shard';
 
         const size = 140 + Math.random() * 260;
+        const sizeH = size * (0.7 + Math.random() * 0.6);
         // Posición de partida: cerca del punto donde se hizo clic, con
         // dispersión aleatoria, para que el estallido nazca ahí.
         const startX = originX + (Math.random() - 0.5) * 22;
         const startY = originY + (Math.random() - 0.5) * 22;
 
         shard.style.setProperty('--sw', size + 'px');
-        shard.style.setProperty('--sh', (size * (0.7 + Math.random() * 0.6)) + 'px');
+        shard.style.setProperty('--sh', sizeH + 'px');
         shard.style.setProperty('--sx', startX + '%');
         shard.style.setProperty('--sy', startY + '%');
 
         // Destino: se reparten hacia los bordes de la pantalla en abanico.
         const angle = (i / SHARD_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
         const dist = Math.max(vw, vh) * (0.35 + Math.random() * 0.35);
-        const tx = Math.cos(angle) * dist + 'px';
-        const ty = Math.sin(angle) * dist + 'px';
-        const rot = (Math.random() - 0.5) * 260 + 'deg';
-        const delay = (Math.random() * 0.18).toFixed(2) + 's';
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+        const rot = (Math.random() - 0.5) * 260;
+        const delay = (Math.random() * 0.18).toFixed(2);
 
-        shard.style.setProperty('--tx', tx);
-        shard.style.setProperty('--ty', ty);
-        shard.style.setProperty('--rot', rot);
-        shard.style.setProperty('--delay', delay);
+        shard.style.setProperty('--tx', tx + 'px');
+        shard.style.setProperty('--ty', ty + 'px');
+        shard.style.setProperty('--rot', rot + 'deg');
+        shard.style.setProperty('--delay', delay + 's');
 
         overlay.appendChild(shard);
         shards.push(shard);
+
+        // Posición final absoluta en % del viewport, para poder
+        // reconstruir exactamente esta misma disposición como fondo
+        // en la página de destino (independientemente de su tamaño
+        // de ventana, guardamos en % relativo).
+        const finalXPercent = startX + (tx / vw) * 100;
+        const finalYPercent = startY + (ty / vh) * 100;
+        layout.push({
+          xPct: finalXPercent,
+          yPct: finalYPercent,
+          w: size,
+          h: sizeH,
+          rot: rot
+        });
       }
+
+      try {
+        sessionStorage.setItem('crystalLayout', JSON.stringify(layout));
+      } catch (e) { /* almacenamiento no disponible, se ignora */ }
     }
 
     function triggerShatter(originX, originY, onDone) {
@@ -1557,6 +1577,7 @@
         e.preventDefault();
 
         if (reduceMotion) {
+          try { sessionStorage.removeItem('crystalLayout'); } catch (e) { /* no disponible */ }
           window.location.href = href;
           return;
         }

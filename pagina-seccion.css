@@ -27,10 +27,13 @@ body {
 }
 
 /* ---------- fondo de fragmentos de cristal ---------- */
-/* Contenedor fijo detrás de todo el contenido. Cada página genera su
-   propia composición aleatoria de fragmentos (semilla distinta por
-   página), con la misma estética que los cristales de la página
-   principal, y un movimiento de flotación muy lento y sutil. */
+/* Contenedor fijo detrás de todo el contenido. Si se llega desde la
+   transición "salir del cristal" de fragmentos-cristal.html, muestra
+   exactamente la misma disposición final en la que quedaron los
+   fragmentos al terminar esa animación (ver crystal-bg.js). Si se
+   entra directo a la página, usa una composición aleatoria de
+   respaldo. En ambos casos, con la misma estética que los cristales
+   de la página principal y un movimiento de flotación muy lento. */
 #crystalBg {
   position: fixed;
   inset: 0;
@@ -41,6 +44,9 @@ body {
 
 .bg-shard {
   position: absolute;
+  width: var(--sw, 200px);
+  height: var(--sh, 200px);
+  margin: calc(var(--sh, 200px) / -2) 0 0 calc(var(--sw, 200px) / -2);
   opacity: 0;
   background:
     linear-gradient(135deg, rgba(232, 236, 244, 0.22), rgba(62, 207, 178, 0.14) 45%, rgba(8, 13, 26, 0.96) 85%);
