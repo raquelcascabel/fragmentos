@@ -1,10 +1,11 @@
 // Fondo de fragmentos de cristal para las páginas de sección.
-// Genera una composición aleatoria de "esquirlas" facetadas —misma
-// silueta bipiramidal irregular que los cristales 3D de la página
-// principal— flotando muy lento y sutil detrás del contenido.
-// Cada página que incluye este script obtiene su propia composición
-// aleatoria (no se fija ninguna semilla), así que el patrón varía de
-// una página a otra de forma natural.
+// Genera una composición aleatoria de placas rectangulares irregulares
+// (esquinas con ligero jitter, no puntiagudas), con el mismo degradado
+// diagonal oscuro/verdoso y contorno luminoso fino que los cristales
+// de la página principal, flotando muy lento y sutil detrás del
+// contenido. Cada página que incluye este script obtiene su propia
+// composición aleatoria (no se fija ninguna semilla), así que el
+// patrón varía de una página a otra de forma natural.
 (function () {
   const container = document.getElementById('crystalBg');
   if (!container) return;
@@ -16,10 +17,23 @@
     return min + Math.random() * (max - min);
   }
 
+  // Genera un cuadrilátero irregular (esquinas con jitter suave sobre
+  // un rectángulo base) en un viewBox de 100x100, para simular una
+  // placa de cristal recortada a mano en vez de un rectángulo perfecto.
+  function buildQuadPoints() {
+    const j = 10; // jitter máximo por esquina, en unidades del viewBox
+    const corners = [
+      [4, 4], [96, 4], [96, 96], [4, 96]
+    ];
+    return corners
+      .map(([x, y]) => (x + rand(-j, j)).toFixed(1) + ',' + (y + rand(-j, j)).toFixed(1))
+      .join(' ');
+  }
+
   function buildShard() {
     const gid = 'bgcg' + (gradIdCounter++);
-    const w = rand(90, 260);
-    const h = w * rand(1.3, 1.7);
+    const w = rand(110, 260);
+    const h = w * rand(0.85, 1.35);
 
     const wrap = document.createElement('div');
     wrap.className = 'bg-shard';
@@ -28,7 +42,7 @@
     wrap.style.width = w + 'px';
     wrap.style.height = h + 'px';
 
-    const baseRot = rand(-35, 35);
+    const baseRot = rand(-30, 30);
     wrap.style.setProperty('--base-rot', baseRot + 'deg');
     wrap.style.setProperty('--float-x', rand(-18, 18) + 'px');
     wrap.style.setProperty('--float-y', rand(-22, 22) + 'px');
@@ -38,21 +52,17 @@
     wrap.style.setProperty('--target-opacity', rand(0.16, 0.34).toFixed(2));
     wrap.style.transform = 'rotate(' + baseRot + 'deg)';
 
-    // Misma silueta bipiramidal irregular que el mini-cristal de los
-    // separadores: punta corta arriba, punta larga abajo, corona de
-    // facetas en el ecuador.
+    const points = buildQuadPoints();
+
     wrap.innerHTML =
-      '<svg viewBox="0 0 22 34" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">' +
-      '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0%" stop-color="#8B7FF5"/>' +
-      '<stop offset="45%" stop-color="#E8ECF4"/>' +
-      '<stop offset="100%" stop-color="#3ECFB2"/>' +
+      '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">' +
+      '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#3ECFB2" stop-opacity="0.5"/>' +
+      '<stop offset="55%" stop-color="#12212B" stop-opacity="0.85"/>' +
+      '<stop offset="100%" stop-color="#080D1A" stop-opacity="0.95"/>' +
       '</linearGradient></defs>' +
-      '<polygon points="11,2 16,13 11,15 6,13" fill="url(#' + gid + ')" opacity="0.9"/>' +
-      '<polygon points="6,13 11,15 8,32" fill="url(#' + gid + ')" opacity="0.78"/>' +
-      '<polygon points="11,15 16,13 14,31 8,32" fill="url(#' + gid + ')" opacity="0.62"/>' +
-      '<polygon points="14,31 16,13 19,15 11,15" fill="url(#' + gid + ')" opacity="0.46"/>' +
-      '<path d="M11,2 L6,13 M11,2 L16,13 M6,13 L11,15 M16,13 L11,15 M6,13 L8,32 M11,15 L8,32 M11,15 L14,31 M16,13 L14,31" fill="none" stroke="rgba(232,236,244,0.4)" stroke-width="0.5"/>' +
+      '<polygon points="' + points + '" fill="url(#' + gid + ')" ' +
+      'stroke="rgba(232,236,244,0.5)" stroke-width="0.8"/>' +
       '</svg>';
 
     return wrap;
