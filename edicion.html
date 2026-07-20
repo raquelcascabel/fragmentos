@@ -109,7 +109,7 @@
     CLIENT_GROUPS.forEach(group => {
       const divider = document.createElement('div');
       divider.className = 'group-divider';
-      divider.innerHTML = '<span class="line"></span>' + miniCrystalSVG() + '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>' + miniCrystalSVG() + '<span class="line"></span>';
+      divider.innerHTML = miniCrystalSVG() + '<span class="group-label">Cliente — <strong>' + group.client + '</strong></span>' + miniCrystalSVG();
       container.appendChild(divider);
 
       const block = document.createElement('div');

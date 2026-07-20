@@ -1,9 +1,9 @@
 // Fondo de fragmentos de cristal para las páginas de sección.
-// Genera una composición aleatoria de placas rectangulares irregulares
-// (esquinas con ligero jitter, no puntiagudas), con el mismo degradado
-// diagonal oscuro/verdoso y contorno luminoso fino que los cristales
-// de la página principal, flotando muy lento y sutil detrás del
-// contenido. Cada página que incluye este script obtiene su propia
+// Reutiliza el estilo visual exacto de los fragmentos del efecto de
+// transición "salir del cristal" de fragmentos-cristal.html (rectángulos
+// planos con degradado diagonal + borde luminoso fino + halo verde),
+// convertido en una composición de fondo estática con flotación muy
+// lenta y sutil. Cada página que incluye este script obtiene su propia
 // composición aleatoria (no se fija ninguna semilla), así que el
 // patrón varía de una página a otra de forma natural.
 (function () {
@@ -11,29 +11,14 @@
   if (!container) return;
 
   const SHARD_COUNT = window.innerWidth < 640 ? 5 : 8;
-  let gradIdCounter = 0;
 
   function rand(min, max) {
     return min + Math.random() * (max - min);
   }
 
-  // Genera un cuadrilátero irregular (esquinas con jitter suave sobre
-  // un rectángulo base) en un viewBox de 100x100, para simular una
-  // placa de cristal recortada a mano en vez de un rectángulo perfecto.
-  function buildQuadPoints() {
-    const j = 10; // jitter máximo por esquina, en unidades del viewBox
-    const corners = [
-      [4, 4], [96, 4], [96, 96], [4, 96]
-    ];
-    return corners
-      .map(([x, y]) => (x + rand(-j, j)).toFixed(1) + ',' + (y + rand(-j, j)).toFixed(1))
-      .join(' ');
-  }
-
   function buildShard() {
-    const gid = 'bgcg' + (gradIdCounter++);
-    const w = rand(110, 260);
-    const h = w * rand(0.85, 1.35);
+    const w = rand(140, 320);
+    const h = rand(140, 320);
 
     const wrap = document.createElement('div');
     wrap.className = 'bg-shard';
@@ -49,21 +34,8 @@
     wrap.style.setProperty('--float-rot', rand(-6, 6) + 'deg');
     wrap.style.setProperty('--float-dur', rand(11, 19).toFixed(1) + 's');
     wrap.style.setProperty('--in-delay', rand(0, 1.2).toFixed(2) + 's');
-    wrap.style.setProperty('--target-opacity', rand(0.16, 0.34).toFixed(2));
+    wrap.style.setProperty('--target-opacity', rand(0.55, 0.9).toFixed(2));
     wrap.style.transform = 'rotate(' + baseRot + 'deg)';
-
-    const points = buildQuadPoints();
-
-    wrap.innerHTML =
-      '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">' +
-      '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1">' +
-      '<stop offset="0%" stop-color="#3ECFB2" stop-opacity="0.5"/>' +
-      '<stop offset="55%" stop-color="#12212B" stop-opacity="0.85"/>' +
-      '<stop offset="100%" stop-color="#080D1A" stop-opacity="0.95"/>' +
-      '</linearGradient></defs>' +
-      '<polygon points="' + points + '" fill="url(#' + gid + ')" ' +
-      'stroke="rgba(232,236,244,0.5)" stroke-width="0.8"/>' +
-      '</svg>';
 
     return wrap;
   }
