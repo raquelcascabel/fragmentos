@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre mí — Raquel Bello Patricio</title>
+<meta name="description" content="Perfil profesional, experiencia, formación y herramientas de Raquel Bello Patricio: editora de vídeo y motion graphics designer.">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://www.raquelbellocreative.com/sobre-mi.html">
+<meta property="og:title" content="Sobre mí — Raquel Bello Patricio">
+<meta property="og:description" content="Perfil profesional, experiencia, formación y herramientas de Raquel Bello Patricio.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sobre mí — Raquel Bello Patricio">
+<meta name="twitter:description" content="Perfil profesional, experiencia, formación y herramientas de Raquel Bello Patricio.">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Raquel Bello Patricio — Portfolio">
+<link rel="canonical" href="https://www.raquelbellocreative.com/sobre-mi.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Raquel Bello Patricio",
+    "jobTitle": "Editora de vídeo & Motion Graphics Designer",
+    "url": "https://www.raquelbellocreative.com/sobre-mi.html",
+    "sameAs": ["https://www.linkedin.com/in/raquelbellopatricio"],
+    "email": "raquel.bello.patricio@gmail.com"
+  }
+}
+</script>
+<link rel="stylesheet" href="pagina-seccion.css">
+<script src="crystal-bg.js" defer></script>
+<style>
+  .cv-block {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.4rem;
+    margin-top: 1.4rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+  }
+
+  .contact-row a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .contact-row a:hover,
+  .contact-row a:focus-visible {
+    opacity: 0.75;
+  }
+
+  .contact-row span {
+    color: var(--text-dim);
+  }
+
+  .job {
+    margin-bottom: 2.4rem;
+  }
+
+  .job:last-child {
+    margin-bottom: 0;
+  }
+
+  .job-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.3rem 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .job-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: 1.12rem;
+    color: var(--text);
+  }
+
+  .job-meta {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    color: var(--accent-2);
+    white-space: nowrap;
+  }
+
+  .job ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .job li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.65rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+
+  .job li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .edu-item {
+    margin-bottom: 1rem;
+  }
+
+  .edu-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .edu-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.02rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-detail {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.6rem;
+  }
+
+  .skill-group-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+
+  .skill-group p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+
+  .cv-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 3rem;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid rgba(139, 127, 245, 0.45);
+    border-radius: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    text-decoration: none;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+
+  .cv-download:hover,
+  .cv-download:focus-visible {
+    border-color: var(--accent-2);
+    background: rgba(139, 127, 245, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .job-header { flex-direction: column; align-items: flex-start; }
+    .cv-block { text-align: left; }
+  }
+</style>
+</head>
+<body>
+  <div id="crystalBg" aria-hidden="true"></div>
+
+  <a class="back-link" href="fragmentos-cristal.html"><span>←</span> Volver al recorrido</a>
+
+  <header>
+    <div class="eyebrow">Sobre mí</div>
+    <h1>Raquel Bello Patricio</h1>
+    <div class="contact-row">
+      <a href="https://www.linkedin.com/in/raquelbellopatricio" target="_blank" rel="noopener">LinkedIn</a>
+      <span>·</span>
+      <a href="mailto:raquel.bello.patricio@gmail.com">raquel.bello.patricio@gmail.com</a>
+    </div>
+  </header>
+
+  <article>
+    <p>Profesional audiovisual con más de 7 años de experiencia combinando edición de vídeo, motion graphics y creación de contenido para redes sociales, con base sólida en producción y postproducción televisiva (Boomerang TV, Telecinco). Especializada en dar forma visual a campañas de marca para TikTok e Instagram, integrando herramientas de inteligencia artificial en los flujos de edición, corrección de color y generación de efectos visuales para optimizar tiempos y calidad. Autónoma en todo el proceso creativo, desde la conceptualización hasta la entrega final.</p>
+  </article>
+
+  <div class="group-divider">
+    <span class="group-label">Experiencia</span>
+  </div>
+
+  <div class="group-block cv-block">
+    <div class="job">
+      <div class="job-header">
+        <span class="job-title">Editora de vídeo y motion graphics — Contenido de marca para redes sociales</span>
+        <span class="job-meta">Freelance · 2022 — Actualidad</span>
+      </div>
+      <ul>
+        <li>Producción y edición de contenido audiovisual de marca para clientes como EWS y NZI, combinando metraje real con recursos generados y motion graphics, adaptado a formatos verticales para TikTok e Instagram.</li>
+        <li>Diseño de sistemas de rótulo y motion graphics para mantener consistencia visual de marca entre piezas.</li>
+        <li>Incorporación de herramientas de IA en el flujo de trabajo: generación de recursos visuales, optimización de corrección de color y ajuste de audio, reduciendo tiempos de entrega.</li>
+        <li>Grabación puntual de contenido audiovisual, coordinando encuadre, luz e indicaciones a cámara para asegurar material aprovechable en montaje.</li>
+        <li>Gestión integral de proyectos: desde el guion y la idea creativa hasta la entrega final en el formato de cada plataforma.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <span class="job-title">Postproducción audiovisual</span>
+        <span class="job-meta">Boomerang TV / Telecinco</span>
+      </div>
+      <ul>
+        <li>Edición y montaje de contenido para emisión, con manejo de flujos de trabajo broadcast y estándares de calidad profesional.</li>
+        <li>Adaptación de piezas audiovisuales a distintos formatos y canales de distribución.</li>
+        <li>Trabajo en entornos de producción de alto volumen y plazos ajustados, con criterio narrativo y de ritmo visual.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <span class="job-title">Dirección, guion y edición — Pieza de animación stop-motion (satírica)</span>
+        <span class="job-meta">Proyecto propio</span>
+      </div>
+      <ul>
+        <li>Concepción, guionización, construcción de figuras de plastilina, dirección, grabación y edición íntegramente en solitario.</li>
+        <li>Demuestra dominio del proceso de producción completo: idea, ejecución técnica y narrativa, y postproducción.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="group-divider">
+    <span class="group-label">Formación</span>
+  </div>
+
+  <div class="group-block cv-block">
+    <div class="edu-item">
+      <div class="edu-title">Grado en Periodismo</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-title">Formación complementaria en modelado poligonal 3D (en curso)</div>
+      <div class="edu-detail">Blender, Houdini</div>
+    </div>
+  </div>
+
+  <div class="group-divider">
+    <span class="group-label">Herramientas y competencias</span>
+  </div>
+
+  <div class="group-block cv-block">
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Edición y postproducción</div>
+        <p>Adobe Premiere Pro, After Effects, DaVinci Resolve, Nuke.</p>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Motion graphics y 3D</div>
+        <p>After Effects, Blender, Houdini, Cinema 4D.</p>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Diseño gráfico e ilustración</div>
+        <p>Canva, herramientas de diseño digital.</p>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">IA aplicada a contenido</div>
+        <p>Generación de recursos visuales, optimización de flujos de edición, corrección de color y ajuste de audio.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>Raquel Bello · Sobre mí</footer>
+</body>
+</html>

@@ -389,6 +389,27 @@
     gap: 0.8rem;
   }
 
+  .hero-about-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, gap 0.3s ease;
+  }
+
+  .hero-about-link:hover,
+  .hero-about-link:focus-visible {
+    opacity: 1;
+    gap: 0.8rem;
+  }
+
   @media (max-width: 640px) {
     .section { padding: 0 7vw; }
     .block { max-width: 100%; }
@@ -483,6 +504,7 @@
       <div class="eyebrow">Raquel Bello Patricio</div>
       <h1>AI Content Creator<br>Video Editor<br>Visual Storytelling</h1>
       <p>Un recorrido entre cristal y estrellas. Cada fragmento, un trabajo distinto.<br>Haz scroll para avanzar.</p>
+      <a class="hero-about-link" href="sobre-mi.html">Sobre mí <span>→</span></a>
     </div>
     <div class="scroll-hint" id="scrollHint">
       <span class="line"></span>

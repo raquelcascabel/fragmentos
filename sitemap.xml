@@ -24,4 +24,8 @@
     <loc>https://www.raquelbellocreative.com/direccion.html</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.raquelbellocreative.com/sobre-mi.html</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>
