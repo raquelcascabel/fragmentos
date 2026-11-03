@@ -180,7 +180,10 @@
     if (thumbUrl) {
       const img = document.createElement('img');
       img.className = 'ctp-thumb';
-      img.alt = options.alt || 'Miniatura de vídeo, haz clic para reproducir';
+      // El contenedor ya tiene una etiqueta accesible; la imagen es decorativa.
+      img.alt = '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
       img.src = thumbUrl;
       img.addEventListener('load', () => applyRatio(img.naturalWidth, img.naturalHeight));
       wrap.appendChild(img);
@@ -194,7 +197,7 @@
 
     function startPlayback() {
       if (options.lightbox) {
-        openVideoLightbox(originalUrl);
+        openVideoLightbox(originalUrl, wrap);
         return;
       }
       wrap.innerHTML = '';
@@ -278,25 +281,33 @@
     document.head.appendChild(style);
   }
 
-  function openVideoLightbox(originalUrl) {
+  function openVideoLightbox(originalUrl, triggerEl) {
     injectLightboxStyles();
-    const triggerEl = document.activeElement;
+    triggerEl = triggerEl || document.activeElement;
     let overlay = document.getElementById('ctp-lightbox-global');
 
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.id = 'ctp-lightbox-global';
       overlay.className = 'ctp-lightbox';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-label', 'Reproductor de vídeo');
+      overlay.setAttribute('aria-hidden', 'true');
 
       const closeBtn = document.createElement('button');
       closeBtn.type = 'button';
       closeBtn.className = 'ctp-lightbox-close';
       closeBtn.setAttribute('aria-label', 'Cerrar vídeo');
       closeBtn.textContent = '✕';
+      closeBtn.tabIndex = -1;
       overlay.appendChild(closeBtn);
 
       function close() {
+        if (!overlay.classList.contains('is-open')) return;
         overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        closeBtn.tabIndex = -1;
         const v = overlay.querySelector('video');
         if (v) v.pause();
         if (overlay._triggerEl && overlay._triggerEl.focus) {
@@ -326,8 +337,12 @@
     v.play().catch(function () {});
 
     overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
     const closeBtnEl = overlay.querySelector('.ctp-lightbox-close');
-    if (closeBtnEl) closeBtnEl.focus();
+    if (closeBtnEl) {
+      closeBtnEl.tabIndex = 0;
+      closeBtnEl.focus();
+    }
   }
 
   global.openVideoLightbox = openVideoLightbox;
