@@ -333,7 +333,9 @@
   }
 
   @media (max-width: 640px) {
-    .side-nav { right: 0.9rem; gap: 0.8rem; }
+    .side-nav { right: 0.35rem; gap: 0.15rem; }
+    /* Zona táctil de 44 × 44 px sin agrandar los puntos visibles. */
+    .side-nav a { width: 44px; height: 44px; padding: 0; }
     .side-nav a::before { display: none; }
   }
 
@@ -485,6 +487,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
     .shatter-overlay.is-active .shatter-shard,
     .shatter-overlay.is-active .shatter-flash {
       transition: opacity 0.25s ease;
