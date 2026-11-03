@@ -250,7 +250,7 @@
       .ctp-lightbox.is-open { opacity: 1; pointer-events: auto; }
       .ctp-lightbox video {
         max-width: 90vw;
-        max-height: 85vh;
+        max-height: 85dvh;
         width: auto;
         height: auto;
         background: #000;
@@ -306,20 +306,36 @@
 
       function close() {
         if (!overlay.classList.contains('is-open')) return;
-        overlay.classList.remove('is-open');
-        overlay.setAttribute('aria-hidden', 'true');
-        closeBtn.tabIndex = -1;
         const v = overlay.querySelector('video');
         if (v) v.pause();
+        overlay.classList.remove('is-open');
+        overlay.inert = true;
+        closeBtn.tabIndex = -1;
         if (overlay._triggerEl && overlay._triggerEl.focus) {
           overlay._triggerEl.focus();
         }
-        overlay.inert = true;
+        overlay.setAttribute('aria-hidden', 'true');
       }
       closeBtn.addEventListener('click', close);
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
       document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') close();
+        if (!overlay.classList.contains('is-open')) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          close();
+        } else if (e.key === 'Tab') {
+          // Mantener el foco dentro del reproductor modal.
+          const focusable = [closeBtn, ...overlay.querySelectorAll('video[controls]')];
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       });
 
       document.body.appendChild(overlay);
