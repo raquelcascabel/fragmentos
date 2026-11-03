@@ -28,7 +28,11 @@
   }
 
   function renderFromLayout(layout) {
-    layout.forEach(s => container.appendChild(makeShardEl(s.xPct, s.yPct, s.w, s.h, s.rot)));
+    layout.forEach(s => {
+      // Se corrigen también distribuciones guardadas con cristales antiguos.
+      const h = Math.max(s.h, s.w * 1.7);
+      container.appendChild(makeShardEl(s.xPct, s.yPct, s.w, h, Math.max(-12, Math.min(12, s.rot))));
+    });
   }
 
   function renderRandomFallback() {
@@ -37,8 +41,8 @@
     const maxW = isMobile ? 200 : 320;
     for (let i = 0; i < shardCount; i++) {
       const w = rand(100, maxW);
-      const h = rand(100, maxW);
-      container.appendChild(makeShardEl(rand(-6, 92), rand(-6, 88), w, h, rand(-30, 30)));
+      const h = w * rand(1.7, 1.95);
+      container.appendChild(makeShardEl(rand(-6, 92), rand(-6, 88), w, h, rand(-12, 12)));
     }
   }
 
