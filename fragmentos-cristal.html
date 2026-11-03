@@ -119,7 +119,7 @@
 
   .eyebrow {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1232rem;
+    font-size: 0.9rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--accent);
@@ -132,14 +132,14 @@
      en vez del verde genérico de los demás eyebrows de sección. */
   .hero .eyebrow {
     color: var(--accent-2);
-    font-size: 1.46016rem;
+    font-size: 1.3rem;
     white-space: nowrap;
     display: inline-block;
   }
   @media (max-width: 640px) {
     .hero .eyebrow {
-      font-size: min(1.46016rem, 3.6vw);
-      letter-spacing: 0.16em;
+      font-size: clamp(0.88rem, 3.5vw, 1.1rem);
+      letter-spacing: 0.12em;
     }
   }
 
@@ -152,13 +152,13 @@
   }
 
   h1 {
-    font-size: clamp(1.1232rem, 2.574vw, 1.9656rem); /* titular en mayúsculas y minúsculas: -40% */
+    font-size: clamp(2.1rem, 4.6vw, 3.4rem); /* Escala equilibrada para encabezado principal */
     font-weight: 300;
     letter-spacing: -0.01em;
   }
 
   h2 {
-    font-size: clamp(1.152rem, 2.304vw, 1.728rem);
+    font-size: clamp(1.65rem, 3.2vw, 2.5rem);
     font-weight: 400;
   }
 
@@ -185,7 +185,7 @@
     align-items: center;
     gap: 0.7rem;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.0608rem;
+    font-size: 0.78rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--text-dim);
@@ -236,7 +236,7 @@
 
   footer .signature {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.092rem;
+    font-size: 0.8rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--accent-2);
@@ -257,7 +257,7 @@
     border-radius: 2px;
     backdrop-filter: blur(6px);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.0608rem;
+    font-size: 0.8rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--text);
@@ -312,7 +312,7 @@
   .side-nav a::before {
     content: attr(data-label);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.19808rem;
+    font-size: 0.85rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-dim);
@@ -387,7 +387,7 @@
     gap: 0.5rem;
     margin-top: 1.4rem;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1232rem;
+    font-size: 0.85rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--accent);
@@ -406,7 +406,7 @@
     gap: 0.5rem;
     margin-top: 1.4rem;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1232rem;
+    font-size: 0.85rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--accent-2);
