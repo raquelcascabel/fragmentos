@@ -498,6 +498,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .block, .side-nav a::before, .side-nav a span { transition: none; }
     .shatter-overlay.is-active .shatter-shard,
     .shatter-overlay.is-active .shatter-flash {
       transition: opacity 0.25s ease;
@@ -1140,21 +1141,23 @@
 
   // ---------- loop ----------
   const clock = new THREE.Clock();
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   let animationFrameId = null;
 
   function animate() {
     animationFrameId = requestAnimationFrame(animate);
     const dt = clock.getDelta();
-    const t = clock.getElapsedTime();
+    const t = reducedMotionQuery.matches ? 0 : clock.getElapsedTime();
+    const motionDt = reducedMotionQuery.matches ? 0 : dt;
 
     camera.position.z += (targetZ - camera.position.z) * 0.06;
     camera.position.x += ((mouseX * 1.4) - camera.position.x) * 0.03;
     camera.position.y += ((-mouseY * 1.0) - camera.position.y) * 0.03;
 
     fragments.forEach(f => {
-      f.rotation.x += f.userData.spin.x * dt;
-      f.rotation.y += f.userData.spin.y * dt;
-      f.rotation.z += f.userData.spin.z * dt;
+      f.rotation.x += f.userData.spin.x * motionDt;
+      f.rotation.y += f.userData.spin.y * motionDt;
+      f.rotation.z += f.userData.spin.z * motionDt;
     });
 
     // el cristal-botón más cercano al centro de la pantalla es "el" activo
@@ -1202,8 +1205,8 @@
       s.scale.setScalar(s.userData.baseScale * (0.75 + kc * 0.5));
     });
 
-    starsFar.rotation.y += 0.0006 * dt;
-    starsNear.rotation.y -= 0.0009 * dt;
+    starsFar.rotation.y += 0.0006 * motionDt;
+    starsNear.rotation.y -= 0.0009 * motionDt;
     starsFar.material.uniforms.uTime.value = t;
     starsNear.material.uniforms.uTime.value = t;
 
