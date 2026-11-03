@@ -562,7 +562,7 @@
       <div class="eyebrow">Hablemos</div>
       <h2>Raquel Bello Patricio</h2>
       <p>AI Content Creator · Video Editor · Motion Graphics / VFX · Visual Storytelling</p>
-      <p style="margin-top:0.6rem;"><a href="https://www.linkedin.com/in/raquelbellopatricio" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;pointer-events:auto;">LinkedIn ↗</a> · <a href="mailto:hola@raquelbellocreative.com" style="color:var(--accent);text-decoration:none;pointer-events:auto;">hola@raquelbellocreative.com</a></p>
+      <p style="margin-top:0.6rem;"><a href="https://www.linkedin.com/in/raquelbellopatricio" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;pointer-events:auto;">LinkedIn ↗</a> · <a href="mailto:raquel.bello.patricio@gmail.com" style="color:var(--accent);text-decoration:none;pointer-events:auto;">raquel.bello.patricio@gmail.com</a></p>
     </div>
     <div class="signature reveal">— fragmentos / 2026</div>
   </footer>
@@ -715,6 +715,10 @@
   // corona más corta arriba) con color por vértice, imitando el gema
   // facetada de la referencia en vez de un poliedro regular genérico.
   function makeCrystalGeometry(sides, radiusMid, topHeight, bottomHeight, jitter) {
+    // Silueta vertical: incluso con el máximo jitter y las puntas más cortas,
+    // la altura de la gema supera al diámetro de su corona (mín. aprox. 1.6:1).
+    const maxRadius = 0.85 * (topHeight + bottomHeight) / (2 * 1.6 * (1 + jitter / 2));
+    radiusMid = Math.min(radiusMid, maxRadius);
     const ring = [];
     for (let i = 0; i < sides; i++) {
       const a = (i / sides) * Math.PI * 2;
@@ -859,12 +863,7 @@
 
   for (let i = 0; i < FRAGMENT_COUNT; i++) {
     const sides = 3 + Math.floor(Math.random() * 5); // 3 a 7 caras: cada cristal distinto
-    // El "girth" (radio ecuatorial) ahora cubre un rango mucho más
-    // amplio, incluyendo valores grandes comparables o mayores que las
-    // alturas de las puntas: así la mayoría de cristales salen
-    // "gorditos" por el centro de forma aleatoria, en vez de
-    // sistemáticamente alargados como antes (cuando el radio máximo
-    // posible era bastante menor que la altura mínima).
+    // Variedad de grosor dentro del límite vertical de makeCrystalGeometry.
     const girth = 0.6 + Math.random() * 2.1;
     const mesh = buildCrystal(sides, girth, 1.1 + Math.random() * 0.7, 1.4 + Math.random() * 0.9, 0.22);
 
@@ -890,12 +889,12 @@
       posY,
       -i * SPACING - DEPTH_START
     );
-    mesh.rotation.set(Math.random() * 0.6 - 0.3, Math.random() * Math.PI, Math.random() * 0.6 - 0.3);
+    mesh.rotation.set((Math.random() - 0.5) * 0.18, Math.random() * Math.PI, (Math.random() - 0.5) * 0.18);
 
     mesh.userData.spin = {
-      x: (Math.random() - 0.5) * 0.05,
+      x: 0,
       y: (Math.random() - 0.5) * 0.05,
-      z: (Math.random() - 0.5) * 0.025
+      z: 0
     };
 
     addSparkle(mesh, mesh.geometry.userData.tip, 0.55);
@@ -917,11 +916,11 @@
         mesh.position.y + (Math.random() - 0.5) * 2.4,
         mesh.position.z + (Math.random() - 0.5) * 2.5
       );
-      sat.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      sat.rotation.set((Math.random() - 0.5) * 0.2, Math.random() * Math.PI, (Math.random() - 0.5) * 0.2);
       sat.userData.spin = {
-        x: (Math.random() - 0.5) * 0.09,
+        x: 0,
         y: (Math.random() - 0.5) * 0.09,
-        z: (Math.random() - 0.5) * 0.05
+        z: 0
       };
       addSparkle(sat, sat.geometry.userData.tip, 0.45);
       fragGroup.add(sat);
@@ -947,11 +946,11 @@
       Math.sin(ambAngle) * ambRadius * 0.55 + (Math.random() - 0.5) * 2,
       6 - (i / AMBIENT_COUNT) * 34 + (Math.random() - 0.5) * 3
     );
-    amb.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+    amb.rotation.set((Math.random() - 0.5) * 0.2, Math.random() * Math.PI, (Math.random() - 0.5) * 0.2);
     amb.userData.spin = {
-      x: (Math.random() - 0.5) * 0.04,
+      x: 0,
       y: (Math.random() - 0.5) * 0.04,
-      z: (Math.random() - 0.5) * 0.02
+      z: 0
     };
     if (Math.random() > 0.5) addSparkle(amb, amb.geometry.userData.tip, 0.4);
     fragGroup.add(amb);
@@ -1249,7 +1248,7 @@
         shard.className = 'shatter-shard';
 
         const size = 140 + Math.random() * 260;
-        const sizeH = size * (0.7 + Math.random() * 0.6);
+        const sizeH = size * (1.7 + Math.random() * 0.25);
         // Posición de partida: cerca del punto donde se hizo clic, con
         // dispersión aleatoria, para que el estallido nazca ahí.
         const startX = originX + (Math.random() - 0.5) * 22;
@@ -1265,7 +1264,7 @@
         const dist = Math.max(vw, vh) * (0.35 + Math.random() * 0.35);
         const tx = Math.cos(angle) * dist;
         const ty = Math.sin(angle) * dist;
-        const rot = (Math.random() - 0.5) * 260;
+        const rot = (Math.random() - 0.5) * 24;
         const delay = (Math.random() * 0.18).toFixed(2);
 
         shard.style.setProperty('--tx', tx + 'px');
