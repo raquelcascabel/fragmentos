@@ -585,7 +585,11 @@
 (function() {
   const canvas = document.getElementById('webgl');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // En móviles de alta densidad evitamos renderizar demasiados píxeles.
+  // En escritorio mantenemos el máximo anterior para conservar nitidez.
+  const pixelRatioLimit = () => window.innerWidth <= 640 ? 1.5 : 2;
+  const updatePixelRatio = () => renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, pixelRatioLimit()));
+  updatePixelRatio();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x080D1A, 1);
 
@@ -1118,14 +1122,16 @@
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    updatePixelRatio();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
   // ---------- loop ----------
   const clock = new THREE.Clock();
+  let animationFrameId = null;
 
   function animate() {
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
     const dt = clock.getDelta();
     const t = clock.getElapsedTime();
 
@@ -1195,8 +1201,20 @@
     renderer.render(scene, camera);
   }
 
+  // Liberamos GPU/CPU cuando la pestaña está en segundo plano.
+  // Al volver descartamos el tiempo transcurrido para evitar saltos de giro.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    } else if (animationFrameId === null) {
+      clock.getDelta();
+      animate();
+    }
+  });
+
   onScroll();
-  animate();
+  if (!document.hidden) animate();
 })();
 </script>
 
