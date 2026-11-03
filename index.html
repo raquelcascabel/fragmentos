@@ -241,7 +241,9 @@
     video.src = buildMp4Url(INTRO_VIDEO_URL);
   }
 
-  video.src = buildResponsiveFullscreenUrl(INTRO_VIDEO_URL);
+  // Intro en calidad original: sin límite de 780 px ni recompresión automática.
+  // Si falla, el manejador de error prueba la variante optimizada de Cloudinary.
+  video.src = INTRO_VIDEO_URL;
 
   soundToggle.addEventListener('click', () => {
     video.muted = !video.muted;
