@@ -294,6 +294,7 @@
       overlay.setAttribute('aria-modal', 'true');
       overlay.setAttribute('aria-label', 'Reproductor de vídeo');
       overlay.setAttribute('aria-hidden', 'true');
+      overlay.inert = true;
 
       const closeBtn = document.createElement('button');
       closeBtn.type = 'button';
@@ -313,6 +314,7 @@
         if (overlay._triggerEl && overlay._triggerEl.focus) {
           overlay._triggerEl.focus();
         }
+        overlay.inert = true;
       }
       closeBtn.addEventListener('click', close);
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
@@ -338,6 +340,7 @@
 
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
+    overlay.inert = false;
     const closeBtnEl = overlay.querySelector('.ctp-lightbox-close');
     if (closeBtnEl) {
       closeBtnEl.tabIndex = 0;
