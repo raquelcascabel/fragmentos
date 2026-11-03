@@ -132,7 +132,15 @@
      en vez del verde genérico de los demás eyebrows de sección. */
   .hero .eyebrow {
     color: var(--accent-2);
-    font-size: 1.46016rem; /* nombre en mayúsculas: +30% sobre el tamaño anterior */
+    font-size: 1.46016rem;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  @media (max-width: 640px) {
+    .hero .eyebrow {
+      font-size: min(1.46016rem, 3.6vw);
+      letter-spacing: 0.16em;
+    }
   }
 
   h1, h2 {
@@ -889,12 +897,12 @@
       posY,
       -i * SPACING - DEPTH_START
     );
-    mesh.rotation.set((Math.random() - 0.5) * 0.18, Math.random() * Math.PI, (Math.random() - 0.5) * 0.18);
+    mesh.rotation.set((Math.random() - 0.5) * 0.9, Math.random() * Math.PI, (Math.random() - 0.5) * 0.9);
 
     mesh.userData.spin = {
-      x: 0,
+      x: (Math.random() - 0.5) * 0.035,
       y: (Math.random() - 0.5) * 0.05,
-      z: 0
+      z: (Math.random() - 0.5) * 0.035
     };
 
     addSparkle(mesh, mesh.geometry.userData.tip, 0.55);
@@ -916,11 +924,11 @@
         mesh.position.y + (Math.random() - 0.5) * 2.4,
         mesh.position.z + (Math.random() - 0.5) * 2.5
       );
-      sat.rotation.set((Math.random() - 0.5) * 0.2, Math.random() * Math.PI, (Math.random() - 0.5) * 0.2);
+      sat.rotation.set((Math.random() - 0.5) * 1.35, Math.random() * Math.PI, (Math.random() - 0.5) * 1.35);
       sat.userData.spin = {
-        x: 0,
+        x: (Math.random() - 0.5) * 0.07,
         y: (Math.random() - 0.5) * 0.09,
-        z: 0
+        z: (Math.random() - 0.5) * 0.07
       };
       addSparkle(sat, sat.geometry.userData.tip, 0.45);
       fragGroup.add(sat);
@@ -946,11 +954,11 @@
       Math.sin(ambAngle) * ambRadius * 0.55 + (Math.random() - 0.5) * 2,
       6 - (i / AMBIENT_COUNT) * 34 + (Math.random() - 0.5) * 3
     );
-    amb.rotation.set((Math.random() - 0.5) * 0.2, Math.random() * Math.PI, (Math.random() - 0.5) * 0.2);
+    amb.rotation.set((Math.random() - 0.5) * 1.4, Math.random() * Math.PI, (Math.random() - 0.5) * 1.4);
     amb.userData.spin = {
-      x: 0,
+      x: (Math.random() - 0.5) * 0.03,
       y: (Math.random() - 0.5) * 0.04,
-      z: 0
+      z: (Math.random() - 0.5) * 0.03
     };
     if (Math.random() > 0.5) addSparkle(amb, amb.geometry.userData.tip, 0.4);
     fragGroup.add(amb);
