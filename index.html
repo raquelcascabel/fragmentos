@@ -9,15 +9,16 @@
 <meta property="og:url" content="https://www.raquelbellocreative.com/">
 <meta property="og:title" content="Raquel Bello Patricio — AI Content Creator, Video Editor & Motion Graphics">
 <meta property="og:description" content="Portfolio interactivo en 3D: edición de vídeo, motion graphics, VFX y creación de contenido con IA.">
-<meta property="og:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1784130503/avtar_fy2iti.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1790765418/sec_ver_02_1_hkvsob.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Raquel Bello Patricio — AI Content Creator, Video Editor & Motion Graphics">
 <meta name="twitter:description" content="Portfolio interactivo en 3D: edición de vídeo, motion graphics, VFX y creación de contenido con IA.">
-<meta name="twitter:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1784130503/avtar_fy2iti.jpg">
+<meta name="twitter:image" content="https://res.cloudinary.com/dfaijs7v3/video/upload/so_1,q_auto,f_auto/v1790765418/sec_ver_02_1_hkvsob.jpg">
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="Raquel Bello Patricio — Portfolio">
 <link rel="canonical" href="https://www.raquelbellocreative.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -146,11 +147,9 @@
     text-decoration: none;
     border: 1px solid rgba(232, 236, 244, 0.2);
     padding: 0.6rem 1.1rem;
-    opacity: 0;
-    transition: opacity 0.5s ease, color 0.3s ease, border-color 0.3s ease;
+    opacity: 1;
+    transition: color 0.3s ease, border-color 0.3s ease;
   }
-
-  #skipIntro.visible { opacity: 1; }
 
   #skipIntro:hover,
   #skipIntro:focus-visible {
@@ -263,7 +262,6 @@
       goToDestino();
     });
     setTimeout(() => {
-      skipLink.classList.add('visible');
       soundToggle.classList.add('visible');
     }, 1200);
   }
