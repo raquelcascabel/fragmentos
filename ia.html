@@ -62,6 +62,21 @@
     text-decoration: none;
   }
   .project-link:hover { opacity: 0.75; }
+  .clip-figure .project-details {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+  }
+  .project-details .project-credits {
+    margin: 0.35rem 0 0;
+    color: #e8ecf4;
+  }
+  .project-details .project-link {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
   .project-frame {
     width: 100%;
     max-width: 940px;
@@ -125,7 +140,8 @@
         items: [
           {
             url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1795435984/after_perfume_goaijg.mp4',
-            caption: 'En este anuncio de perfume, Mara e Ivo se cruzan en un túnel entre brumas rojas y azules. Probé el movimiento de Mara con Kling y desarrollé planos del frasco con Seedance en Dreamina.',
+            caption: 'En este anuncio de perfume, Mara e Ivo se cruzan en un túnel entre brumas rojas y azules.',
+            credits: 'Kling y Seedance en Dreamina',
             link: { url: 'AFTER_Guia_de_produccion.pdf', label: 'Ver la guía de producción (PDF)' }
           }
         ]
@@ -135,12 +151,13 @@
         items: [
           {
             url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1791308776/Lulaloop_ver03_rina0w.mov',
-            caption: 'Pieza audiovisual de cuatro segundos realizada con Suno, Veo, Runway y ChatGPT.'
+            caption: 'Pieza audiovisual de cuatro segundos.',
+            credits: 'Suno, Veo, Runway y ChatGPT'
           }
         ]
       },
       {
-        project: 'Nuevo proyecto audiovisual con IA',
+        project: 'Frustración',
         items: [
           {
             url: 'https://res.cloudinary.com/dfaijs7v3/video/upload/v1790765418/sec_ver_02_1_hkvsob.mp4',
@@ -184,10 +201,16 @@
       group.items.forEach(item => {
         const figure = document.createElement('figure');
         figure.className = 'clip-figure';
-        figure.appendChild(createClickToPlayVideo(item.url, { height: 320, lightbox: true, alt: item.caption }));
+        const player = createClickToPlayVideo(item.url, { height: 320, lightbox: true, alt: item.caption });
         const caption = document.createElement('figcaption');
         caption.textContent = item.caption;
-        figure.appendChild(caption);
+        if (item.credits) {
+          caption.className = 'project-details';
+          const credits = document.createElement('p');
+          credits.className = 'project-credits';
+          credits.textContent = 'Herramientas de IA: ' + item.credits;
+          caption.appendChild(credits);
+        }
         if (item.link) {
           const link = document.createElement('a');
           link.className = 'project-link';
@@ -195,7 +218,12 @@
           link.target = '_blank';
           link.rel = 'noopener';
           link.textContent = item.link.label;
-          figure.appendChild(link);
+          caption.appendChild(link);
+        }
+        if (item.credits) {
+          figure.append(caption, player);
+        } else {
+          figure.append(player, caption);
         }
         block.appendChild(figure);
       });
